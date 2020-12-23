@@ -1,0 +1,7 @@
+﻿Assembly-CSharp-Editor.csproj
+*.csproj
+*.sln
+Temp
+Library
+obj
+.vscode
