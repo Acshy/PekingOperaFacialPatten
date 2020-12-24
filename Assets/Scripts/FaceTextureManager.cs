@@ -114,7 +114,7 @@ public class FaceTextureManager : MonoBehaviour
                     w *brush.BrushMask.width / brush.Size].r;
                 PaletteManager.Instance.PaintOnChannel(
                    brush.Channel,
-                   mask*brush.Intensity,
+                   mask*brush.Intensity*Time.deltaTime,
                    ref controlMask[clampX + w, calmpY + h]);
 
                 paintColor = PaletteManager.Instance.GetMixedColor(controlMask[clampX + w, calmpY + h]);

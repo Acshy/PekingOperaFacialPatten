@@ -19,9 +19,6 @@
 
         [NoScaleOffset]_EmissionMap ("Emission Map",2D) = "black"{}
         _EmissionScale("Emission Scale",Range(0.0, 1))=1
-        
-        [NoScaleOffset]_EmissionMap ("Emission Map",2D) = "black"{}
-        _EmissionScale("Emission Scale",Range(0.0, 1))=1
 
         _Cutoff("Cutoff",Range(0.0, 1.0))=0.5
     }
