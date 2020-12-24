@@ -16,10 +16,10 @@ public class FaceTextureManager : MonoBehaviour
     public Renderer FaceRenderer;
     public Texture2D baseMap;
     Texture2D resultBaseMap;
-    //public Texture2D controlMask1;
-    //public Texture2D controlMask2;
+    public Texture2D controlMask1;
+    public Texture2D controlMask2;
 
-    float[,][] controlMask;
+    //float[,][] controlMask;
 
     private void Start()
     {
@@ -35,23 +35,25 @@ public class FaceTextureManager : MonoBehaviour
 
         //初始化结果图
         resultBaseMap = new Texture2D(baseMap.width, baseMap.height, TextureFormat.ARGB32, true);
-        controlMask = new float[baseMap.width, baseMap.height][];
-        //controlMask1 = new Texture2D(baseMap.width, baseMap.height, TextureFormat.ARGB32, true);
-        //controlMask2 = new Texture2D(baseMap.width, baseMap.height, TextureFormat.ARGB32, true);
+        //controlMask = new float[baseMap.width, baseMap.height][];
+        controlMask1 = new Texture2D(baseMap.width, baseMap.height, TextureFormat.ARGB32, true);
+        controlMask2 = new Texture2D(baseMap.width, baseMap.height, TextureFormat.ARGB32, true);
         for (int x = 0; x < baseMap.width; x++)
         {
             for (int y = 0; y < baseMap.height; y++)
             {
                 resultBaseMap.SetPixel(x, y, baseMap.GetPixel(x, y));
-                controlMask[x, y] = new float[PaletteManager.Instance.ChannelColors.Length];
-                //controlMask1.SetPixel(x, y, new Color(0, 0, 0, 0));
-                //controlMask2.SetPixel(x, y, new Color(0, 0, 0, 0));
+                //controlMask[x, y] = new float[PaletteManager.Instance.ChannelColors.Length];
+                controlMask1.SetPixel(x, y, new Color(0, 0, 0, 0));
+                controlMask2.SetPixel(x, y, new Color(0, 0, 0, 0));
             }
         }
         resultBaseMap.Apply();
-        //controlMask1.Apply();
-        //controlMask2.Apply();
+        controlMask1.Apply();
+        controlMask2.Apply();
         renderer.material.SetTexture("_BaseMap", resultBaseMap);
+        renderer.material.SetTexture("_ControlMask1", controlMask1);        
+        renderer.material.SetTexture("_ControlMask2", controlMask2);
     }
 
     ProfilerMarker preparePerfMarker = new ProfilerMarker("MyTEST");
@@ -84,9 +86,10 @@ public class FaceTextureManager : MonoBehaviour
         brushOffestY = y < 0 ? brush.Size - brushRangeHeight : 0;
 
         //获取贴图像素颜色
-        //Color[] mask1Color = controlMask1.GetPixels(clampX, calmpY, brushRangeWidth, brushRangeHeight, 0);
-        //Color[] mask2Color = controlMask2.GetPixels(clampX, calmpY, brushRangeWidth, brushRangeHeight, 0);
+        Color[] mask1Color = controlMask1.GetPixels(clampX, calmpY, brushRangeWidth, brushRangeHeight, 0);
+        Color[] mask2Color = controlMask2.GetPixels(clampX, calmpY, brushRangeWidth, brushRangeHeight, 0);
         Color[] resultColor = baseMap.GetPixels(clampX, calmpY, brushRangeWidth, brushRangeHeight, 0);
+
 
         preparePerfMarker.Begin();
 
@@ -95,7 +98,7 @@ public class FaceTextureManager : MonoBehaviour
         float maskSum = 0;
         float mask = 0;
 
-        Color[] maskColor = brush.BrushMask.GetPixels(
+        Color[] brusMaskColor = brush.BrushMask.GetPixels(
             brushOffsetX * brush.BrushMask.width / brush.Size,
             brushOffestY * brush.BrushMask.height / brush.Size,
             brushRangeWidth * brush.BrushMask.width / brush.Size,
@@ -109,38 +112,38 @@ public class FaceTextureManager : MonoBehaviour
             {
                 //mask = brush.Intensity * brush.BrushMask.GetPixel((w + brushOffsetX) * brush.BrushMask.width / brush.Size, (h + brushOffestY) * brush.BrushMask.height / brush.Size).r;
                 mask = 
-                    maskColor[h * brush.BrushMask.height / brush.Size*
+                    brusMaskColor[h * brush.BrushMask.height / brush.Size*
                     brushRangeWidth * brush.BrushMask.width / brush.Size + 
                     w *brush.BrushMask.width / brush.Size].r;
-                PaletteManager.Instance.PaintOnChannel(
-                   brush.Channel,
-                   mask*brush.Intensity*Time.deltaTime,
-                   ref controlMask[clampX + w, calmpY + h]);
-
-                paintColor = PaletteManager.Instance.GetMixedColor(controlMask[clampX + w, calmpY + h]);
-                maskSum = 0;
-                for (int i = 0; i < controlMask[clampX + w, calmpY + h].Length; i++)
-                {
-                    maskSum += controlMask[clampX + w, calmpY + h][i];
-                }
                 // PaletteManager.Instance.PaintOnChannel(
-                //     brush.Channel, mask,
-                //     ref mask1Color[h * brushRangeWidth + w],
-                //     ref mask2Color[h * brushRangeWidth + w],
-                //     out paintColor,
-                //     out maskSum);
+                //    brush.Channel,
+                //    mask*brush.Intensity*Time.deltaTime,
+                //    ref controlMask[clampX + w, calmpY + h]);
 
-                resultColor[h * brushRangeWidth + w] = resultColor[h * brushRangeWidth + w] * (1 - maskSum) + paintColor * maskSum;
+                // paintColor = PaletteManager.Instance.GetMixedColor(controlMask[clampX + w, calmpY + h]);
+                // maskSum = 0;
+                // for (int i = 0; i < controlMask[clampX + w, calmpY + h].Length; i++)
+                // {
+                //     maskSum += controlMask[clampX + w, calmpY + h][i];
+                // }
+                PaletteManager.Instance.PaintOnChannel(
+                    brush.Channel, 
+                    mask*brush.Intensity*Time.deltaTime,
+                    ref mask1Color[h * brushRangeWidth + w],
+                    ref mask2Color[h * brushRangeWidth + w]);
+                //resultColor[h * brushRangeWidth + w] = resultColor[h * brushRangeWidth + w] * (1 - maskSum) + paintColor * maskSum;
             }
         }
         preparePerfMarker.End();
 
-        //controlMask1.SetPixels(clampX, calmpY, brushRangeWidth, brushRangeHeight, mask1Color, 0);
-        //controlMask1.Apply();
-        //controlMask2.SetPixels(clampX, calmpY, brushRangeWidth, brushRangeHeight, mask2Color, 0);
-        //controlMask2.Apply();
+        controlMask1.SetPixels(clampX, calmpY, brushRangeWidth, brushRangeHeight, mask1Color, 0);
+        controlMask1.Apply();
+        controlMask2.SetPixels(clampX, calmpY, brushRangeWidth, brushRangeHeight, mask2Color, 0);
+        controlMask2.Apply();
         resultBaseMap.SetPixels(clampX, calmpY, brushRangeWidth, brushRangeHeight, resultColor, 0);
         resultBaseMap.Apply();
+        FaceRenderer.material.SetTexture("_ControlMask1", controlMask1); 
+        
 
     }
     // Color[] SetColorInRect(Color[] source, Brush brush, int)

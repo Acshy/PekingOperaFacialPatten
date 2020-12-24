@@ -19,6 +19,23 @@ public class PaletteManager : MonoBehaviour
         }
     }
     public Color[] ChannelColors = new Color[8];
+    private void Start() {
+        Matrix4x4  channelColorsMat=new Matrix4x4(ChannelColors[0],ChannelColors[1],ChannelColors[2],ChannelColors[3]);
+        Shader.SetGlobalMatrix("_MaskColor1",channelColorsMat);
+        channelColorsMat=new Matrix4x4(ChannelColors[4],ChannelColors[5],ChannelColors[6],ChannelColors[7]);
+        Shader.SetGlobalMatrix("_MaskColor2",channelColorsMat);
+    }
+
+    public Color GetMixedColor(float[] inputChannels)
+    {
+        Color result = Color.black;
+        for (int i = 0; i < inputChannels.Length; i++)
+        {
+            result += ChannelColors[i] * inputChannels[i];
+        }
+        return result;
+    }
+
     float[] GetChannelsFromMask(Color mask1, Color mask2)
     {
         float[] result = new float[8];
@@ -44,40 +61,34 @@ public class PaletteManager : MonoBehaviour
             }
         }
     }
-    public Color GetMixedColor(float[] inputChannels)
+    public void PaintOnChannel(int channel, float channelValue, ref Color mask1, ref Color mask2)
     {
-        Color result = Color.black;
-        for (int i = 0; i < inputChannels.Length; i++)
-        {
-            result += ChannelColors[i] * inputChannels[i];
-        }
-        return result;
-    }
-    public void PaintOnChannel(int channel, float channelValue, ref Color mask1, ref Color mask2, out Color resultColor, out float channelSumValue)
-    {
-        channelSumValue = 0;
         float[] inputChannels = GetChannelsFromMask(mask1, mask2);
         inputChannels[channel] = Mathf.Clamp01(inputChannels[channel] + channelValue);
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 2; i++)
         {
             if (i != channel)
             {
                 inputChannels[i] *= 1 - inputChannels[channel];
             }
-            channelSumValue += inputChannels[i];
         }
-
+        float a=0;
+        for (int i = 0; i < 8; i++)
+        {
+            a+=inputChannels[i];
+        }
+        
         mask1.r = inputChannels[0];
         mask1.g = inputChannels[1];
         mask1.b = inputChannels[2];
         mask1.a = inputChannels[3];
+        
+
         mask2.r = inputChannels[4];
         mask2.g = inputChannels[5];
         mask2.b = inputChannels[6];
         mask2.a = inputChannels[7];
 
-        resultColor = GetMixedColor(mask1, mask2);
-        channelSumValue = Mathf.Clamp01(channelSumValue);
     }
     public Color GetMixedColor(Color mask1, Color mask2)
     {

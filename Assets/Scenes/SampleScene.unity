@@ -295,6 +295,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FaceRenderer: {fileID: 1895297761}
   baseMap: {fileID: 0}
+  controlMask1: {fileID: 0}
+  controlMask2: {fileID: 0}
 --- !u!114 &887724647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -335,10 +337,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ChannelColors:
-  - {r: 1, g: 1, b: 1, a: 1}
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 1, g: 0.7957734, b: 0, a: 1}
+  - {r: 0.5526845, g: 0.07843137, b: 1, a: 1}
+  - {r: 0.8018868, g: 0.36690104, b: 0.36690104, a: 1}
+  - {r: 1, g: 0.26714987, b: 0, a: 1}
+  - {r: 0.1300379, g: 1, b: 0, a: 1}
   - {r: 0, g: 0.70004034, b: 1, a: 1}
   - {r: 0, g: 0.5943396, b: 0.057287123, a: 1}
   - {r: 0.6739578, g: 0, b: 1, a: 1}
