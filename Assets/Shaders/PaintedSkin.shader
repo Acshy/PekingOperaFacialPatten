@@ -108,13 +108,12 @@
                 float curve = SAMPLE_TEXTURE2D(_CurveMap, sampler_CurveMap, IN.uv).r;
                 float3 normalTS = UnpackNormalScale(SAMPLE_TEXTURE2D(_BumpMap, sampler_BumpMap, IN.uv), _BumpScale);
                 float3 normalWS = normalize(TransformTangentToWorld(normalTS, half3x3(IN.tangentWS, IN.bitangentWS, IN.normalWS)));
-                half4 mask1 = SAMPLE_TEXTURE2D(_ControlMask1, sampler_ControlMask1, IN.uv);
-                half4 mask2 = SAMPLE_TEXTURE2D(_ControlMask2, sampler_ControlMask2, IN.uv);
+                float4 mask1 = SAMPLE_TEXTURE2D(_ControlMask1, sampler_ControlMask1, IN.uv);
+                float4 mask2 = SAMPLE_TEXTURE2D(_ControlMask2, sampler_ControlMask2, IN.uv);
                 
                 //计算绘制颜色
                 half4 paintColor = mul(_MaskColor1, mask1) + mul(_MaskColor2, half4(mask2));
-                paintColor.a = mask1.r + mask1.g + mask1.b + mask1.a + mask2.r + mask2.g + mask2.b+mask2.a;
-                half3 baseColor = lerp(baseMap.rgb, paintColor.rgb, paintColor.a);
+                half3 baseColor = lerp(baseMap.rgb, paintColor.rgb, mask2.a);
                 
                 //计算主光
                 Light light = GetMainLight();
@@ -136,10 +135,10 @@
                 half3 color = baseColor * diffuseColor * _BaseColor + specularColor * specularMask;
                 
                 //自发光
-                color += _MaskColor2[3].rgb * mask2.a * _EmissionScale;
+                //color += _MaskColor2[3].rgb * mask2.a * _EmissionScale;
                 
                 clip(baseMap.a - _Cutoff);
-                return float4(mask1.rgb, 1);
+                return float4(color.rgb, 1);
             }
             ENDHLSL
             

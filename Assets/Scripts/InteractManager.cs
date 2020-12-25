@@ -11,7 +11,7 @@ public class InteractManager : MonoBehaviour
     }
 
     public Brush TestBrush;
-
+    Vector2 lasHitUv;
     void Start()
     {
 
@@ -26,11 +26,14 @@ public class InteractManager : MonoBehaviour
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, float.PositiveInfinity))
             {
                 Vector2 hitUV = hitInfo.textureCoord;
-                bool isStart = Input.GetMouseButtonDown(0);
-                //TODO:调用绘制程序
-                //if(hitInfo.collider.gameObject==FaceTextureManager.Instance.FaceRenderer.gameObject)
+                if (Input.GetMouseButtonDown(0))
+                    lasHitUv = Vector2.zero;
+
+
+                if (hitInfo.collider.gameObject == FaceTextureManager.Instance.FaceRenderer.gameObject)
                 {
-                    FaceTextureManager.Instance.PaintColor(hitUV, TestBrush);
+                    FaceTextureManager.Instance.PaintColor(hitUV, lasHitUv, TestBrush);
+                    lasHitUv = hitUV;
                 }
             }
         }
