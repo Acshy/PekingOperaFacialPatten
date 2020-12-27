@@ -17,11 +17,16 @@
         _SSSScale ("SSS Scale", Range(0.0, 10.0)) = 1
         
         
-        [NoScaleOffset]_ControlMask1 ("_ControlMask1", 2D) = "black" { }
-        [NoScaleOffset]_ControlMask2 ("_ControlMask2", 2D) = "black" { }
         _EmissionScale ("Emission Scale", Range(0.0, 1)) = 1
         
         _Cutoff ("Cutoff", Range(0.0, 1.0)) = 0.5
+
+
+        
+        //[NoScaleOffset]_PaintAreaMask1 ("PaintArea1",2D) = "white"{}
+        //[NoScaleOffset]_PaintAreaMask2 ("PaintArea2",2D) = "white"{}        
+        [NoScaleOffset]_ControlMask1 ("_ControlMask1", 2D) = "black" { }
+        [NoScaleOffset]_ControlMask2 ("_ControlMask2", 2D) = "black" { }
     }
     SubShader
     {

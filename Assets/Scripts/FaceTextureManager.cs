@@ -63,18 +63,26 @@ public class FaceTextureManager : MonoBehaviour
     {
         if (lastUV == Vector2.zero)
             return;
-        float distance = Vector2.Distance(currentUV, lastUV);
-        Vector2 direction = (currentUV - lastUV).normalized;
-        int interpolateCount = Mathf.RoundToInt(distance / InterpolateDis);
-        if (distance > 0.5f || interpolateCount < 1)
-            interpolateCount = 1;
-        for (int i = 0; i < interpolateCount; i++)
+        if (baseMap == null)
+            return;
+
+        Vector2 vec2 = lastUV - currentUV;
+        Vector2 dir = vec2.normalized;
+
+        int pointCount = (int)Mathf.Sqrt(Vector2.SqrMagnitude( new Vector2(vec2.x * baseMap.width, vec2.y * baseMap.height)) / brush.Size / 2);
+        float stepDis = Vector2.Distance(lastUV, currentUV) / pointCount;
+
+        if (pointCount <= 1 || Vector2.SqrMagnitude(vec2)>0.25f)
         {
-            PaintColor(currentUV - direction * InterpolateDis * i, brush);
+            PaintColor(currentUV, brush);
         }
-
-
-
+        else
+        {
+            for (int i = 0; i < pointCount; i++)
+            {
+                PaintColor(currentUV + dir * stepDis * i, brush);
+            }
+        }
     }
     public void PaintColor(Vector2 pointUV, Brush brush)
     {
@@ -131,24 +139,9 @@ public class FaceTextureManager : MonoBehaviour
             for (int h = 0; h < brushRangeHeight; h++)
             {
 
-                preparePerfMarker.Begin();
-                //mask = brush.Intensity * brush.BrushMask.GetPixel((w + brushOffsetX) * brush.BrushMask.width / brush.Size, (h + brushOffestY) * brush.BrushMask.height / brush.Size).r;
                 index = (int)(h * ratio) * (int)(brushRangeWidth * ratio) + (int)(w * ratio);
                 index = index < brusMaskColor.Length ? index : brusMaskColor.Length - 1;
                 mask = brusMaskColor[index].r;
-
-                preparePerfMarker.End();
-                // PaletteManager.Instance.PaintOnChannel(
-                //    brush.Channel,
-                //    mask*brush.Intensity*Time.deltaTime,
-                //    ref controlMask[clampX + w, calmpY + h]);
-
-                // paintColor = PaletteManager.Instance.GetMixedColor(controlMask[clampX + w, calmpY + h]);
-                // maskSum = 0;
-                // for (int i = 0; i < controlMask[clampX + w, calmpY + h].Length; i++)
-                // {
-                //     maskSum += controlMask[clampX + w, calmpY + h][i];
-                // }
 
                 PaletteManager.Instance.PaintOnChannel(
                     brush.Channel,
