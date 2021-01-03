@@ -110,9 +110,9 @@
                 return OUT;
             }
             
-            float adjustPaint(float maskValue, float paintValue)
+            float adjustPaint(float maskValue, float paintAreaValue)
             {
-                return smoothstep(_Correction, 1-_Correction, maskValue + _Correction * paintValue);
+                return smoothstep(_Correction, 1, maskValue + _Correction * paintAreaValue);
             }
             
             float4 frag(Varings IN): SV_Target
@@ -129,7 +129,6 @@
                 float4 paintArea2 = SAMPLE_TEXTURE2D(_PaintArea2, sampler_PaintArea2, IN.uv);
 
                 
-                float alpha = mask1.r + mask1.g + mask1.b + mask1.a + mask2.r + mask2.g + mask2.b + mask2.a;      
                 
                 //绘制区域校正
                 mask1.r = adjustPaint(mask1.r, paintArea1.r);
@@ -142,6 +141,7 @@
                 mask2.a = adjustPaint(mask2.a, paintArea2.a);
                     
                 
+                float alpha = mask1.r + mask1.g + mask1.b + mask1.a + mask2.r + mask2.g + mask2.b + mask2.a;      
                 
                 
                 //计算绘制颜色
@@ -168,7 +168,7 @@
                 half3 color = baseColor * diffuseColor * _BaseColor + specularColor * specularMask;
                 
                 //自发光
-                //color += _MaskColor2[3].rgb * mask2.a * _EmissionScale;
+                //color += paintArea1.rgb * _EmissionScale;
                 //color = half3(alpha,alpha,alpha);
                 clip(baseMap.a - _Cutoff);
                 return float4(color, 1);
