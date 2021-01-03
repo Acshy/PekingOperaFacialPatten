@@ -112,7 +112,7 @@
             
             float adjustPaint(float maskValue, float paintValue)
             {
-                return smoothstep(_Correction, 1, maskValue + _Correction * paintValue);
+                return smoothstep(_Correction, 1-_Correction, maskValue + _Correction * paintValue);
             }
             
             float4 frag(Varings IN): SV_Target
@@ -127,6 +127,9 @@
                 float4 mask2 = SAMPLE_TEXTURE2D(_ControlMask2, sampler_ControlMask2, IN.uv);
                 float4 paintArea1 = SAMPLE_TEXTURE2D(_PaintArea1, sampler_PaintArea1, IN.uv);
                 float4 paintArea2 = SAMPLE_TEXTURE2D(_PaintArea2, sampler_PaintArea2, IN.uv);
+
+                
+                float alpha = mask1.r + mask1.g + mask1.b + mask1.a + mask2.r + mask2.g + mask2.b + mask2.a;      
                 
                 //绘制区域校正
                 mask1.r = adjustPaint(mask1.r, paintArea1.r);
@@ -137,14 +140,13 @@
                 mask2.g = adjustPaint(mask2.g, paintArea2.g);
                 mask2.b = adjustPaint(mask2.b, paintArea2.b);
                 mask2.a = adjustPaint(mask2.a, paintArea2.a);
-                
-                mask2.a = mask1.r + mask1.r + mask1.b + mask1.a + mask2.r + mask2.g + mask2.b + mask2.a;              
+                    
                 
                 
                 
                 //计算绘制颜色
                 half4 paintColor = mul(_MaskColor1, mask1) + mul(_MaskColor2, half4(mask2));
-                half3 baseColor = lerp(baseMap.rgb, paintColor.rgb, mask2.a);
+                half3 baseColor = lerp(baseMap.rgb, paintColor.rgb, alpha);
                 
                 //计算主光
                 Light light = GetMainLight();
@@ -167,7 +169,7 @@
                 
                 //自发光
                 //color += _MaskColor2[3].rgb * mask2.a * _EmissionScale;
-                
+                //color = half3(alpha,alpha,alpha);
                 clip(baseMap.a - _Cutoff);
                 return float4(color, 1);
             }

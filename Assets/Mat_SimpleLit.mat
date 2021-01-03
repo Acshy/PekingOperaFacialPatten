@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 20addae743296cc4385d4dde22f8196b, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9761cd9eb4781a647967cdf266719994, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -43,6 +43,14 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _PaintArea1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _PaintArea2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SSSRampMap:
         m_Texture: {fileID: 2800000, guid: 0cc42ade0a4126b46ac14502917a8693, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -53,9 +61,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 0.6
+    - _Correction: 0.25
     - _Cutoff: 0
     - _EmissionScale: 1
-    - _SSSScale: 2
+    - _SSSScale: 1
     - _Smoothness: 10
     - _SpcularGloss: 100
     m_Colors:

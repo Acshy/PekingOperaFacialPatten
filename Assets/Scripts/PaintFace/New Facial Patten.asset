@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ec068381e275647bd680ace87b52b5, type: 3}
+  m_Name: New Facial Patten
+  m_EditorClassIdentifier: 
+  icon: {fileID: 2800000, guid: 20addae743296cc4385d4dde22f8196b, type: 3}
+  faceName: 
+  belong: 
+  introduction: 
+  handDang: 0
+  puShi: 0
+  paintDifficulty: 0
+  extraColors:
+  - {r: 0, g: 0, b: 0, a: 0}
+  maskMap: {fileID: 2800000, guid: 3f5a9dc2b69db1942b698772e1105182, type: 3}
