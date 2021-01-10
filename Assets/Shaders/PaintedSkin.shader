@@ -144,15 +144,15 @@
                 mask2.a = adjustPaint(mask2.a, paintArea2.a);
                 */
                 
-                float alpha = mask1.r + mask1.g + mask1.b + mask1.a + mask2.r + mask2.g + mask2.b + mask2.a;
-
+                float alpha = mask1.r + mask1.g + mask1.b + mask1.a + mask2.r + mask2.g + mask2.b;
+                
                 
                 //计算绘制颜色
                 half4 paintColor = mul(_MaskColor1, mask1) + mul(_MaskColor2, half4(mask2));
                 half3 baseColor = lerp(baseMap.rgb, paintColor.rgb, alpha);
                 
                 //绘制油彩部分，高光更强
-                specularMask = saturate(specularMask + (alpha * (paintColor.a-0.5)*0.5f));
+                specularMask = saturate(specularMask + (alpha * (paintColor.a - 0.5) * 0.5f) + mask2.a);
                 
                 //计算主光
                 Light light = GetMainLight();

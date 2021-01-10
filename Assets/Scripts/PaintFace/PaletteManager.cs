@@ -20,6 +20,7 @@ public class PaletteManager : MonoBehaviour
     {
         Matrix4x4 channelColorsMat = new Matrix4x4(ChannelColors[0], ChannelColors[1], ChannelColors[2], ChannelColors[3]);
         Shader.SetGlobalMatrix("_MaskColor1", channelColorsMat);
+        ChannelColors[7] = Color.black;//第八个通道用来抹油，不上色
         channelColorsMat = new Matrix4x4(ChannelColors[4], ChannelColors[5], ChannelColors[6], ChannelColors[7]);
         Shader.SetGlobalMatrix("_MaskColor2", channelColorsMat);
     }

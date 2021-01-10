@@ -10,6 +10,7 @@ public class Brush : MonoBehaviour
     public float Continuity;
     public float Intensity;
     public float InkAmount;
+    public BrushType BrushType;
 
     float ink;
 
@@ -17,9 +18,9 @@ public class Brush : MonoBehaviour
     {
         ink = InkAmount;
     }
-    public void UseInk(float usedInk)
+    public void UseInk()
     {
-        ink -= usedInk;
+        ink--;
         
         ink = ink > 0 ? ink : 0;
     }
@@ -40,6 +41,7 @@ public class Brush : MonoBehaviour
         Intensity = brush.Intensity;
         InkAmount = brush.InkAmount;
         Continuity = brush.Continuity;
+        BrushType = brush.BrushType;
         ResetInk();
     }
 }

@@ -402,7 +402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fb5979b8dc7b6f4a8783a961ec22291, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TestBrush: {fileID: 11400000, guid: 9ddb43edecea0c74ca6be175f581f8e7, type: 2}
+  TestBrush: {fileID: 11400000, guid: d84328792e4419e489b59f1921e41c9a, type: 2}
   HeadCenter: {fileID: 1895297762}
   CameraRotSpeed: {x: 0.5, y: 0.5}
 --- !u!4 &887724648
@@ -439,7 +439,7 @@ MonoBehaviour:
   - {r: 0.7410197, g: 0, b: 1, a: 1}
   - {r: 0, g: 1, b: 0.8542311, a: 1}
   - {r: 1, g: 0.33686075, b: 0, a: 1}
-  - {r: 1, g: 0.44984177, b: 0, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &1571512572
 GameObject:
   m_ObjectHideFlags: 0
