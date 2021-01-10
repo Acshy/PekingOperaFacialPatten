@@ -18,14 +18,14 @@
         
         
         _EmissionScale ("Emission Scale", Range(0.0, 1)) = 1
-        _Correction ("Collection Value", Range(0.0, 1.0)) = 0.25
+        //_Correction ("Correction Value", Range(0.0, 1.0)) = 0.25
         
         _Cutoff ("Cutoff", Range(0.0, 1.0)) = 0.5
         
         
         
-        [NoScaleOffset]_PaintArea1 ("_PaintArea1", 2D) = "black" { }
-        [NoScaleOffset]_PaintArea2 ("_PaintArea2", 2D) = "black" { }
+        //[NoScaleOffset]_PaintArea1 ("_PaintArea1", 2D) = "black" { }
+        //[NoScaleOffset]_PaintArea2 ("_PaintArea2", 2D) = "black" { }
         [NoScaleOffset]_ControlMask1 ("_ControlMask1", 2D) = "black" { }
         [NoScaleOffset]_ControlMask2 ("_ControlMask2", 2D) = "black" { }
     }
@@ -44,7 +44,7 @@
         float _BumpScale;
         float _SSSScale;
         float _Cutoff;
-        float _Correction;
+        //float _Correction;
         float _EmissionScale;
         CBUFFER_END
         
@@ -110,10 +110,12 @@
                 return OUT;
             }
             
+            /*
             float adjustPaint(float maskValue, float paintAreaValue)
             {
                 return smoothstep(_Correction, 1, maskValue + _Correction * paintAreaValue);
             }
+            */
             
             float4 frag(Varings IN): SV_Target
             {
@@ -125,12 +127,13 @@
                 float3 normalWS = normalize(TransformTangentToWorld(normalTS, half3x3(IN.tangentWS, IN.bitangentWS, IN.normalWS)));
                 float4 mask1 = SAMPLE_TEXTURE2D(_ControlMask1, sampler_ControlMask1, IN.uv);
                 float4 mask2 = SAMPLE_TEXTURE2D(_ControlMask2, sampler_ControlMask2, IN.uv);
-                float4 paintArea1 = SAMPLE_TEXTURE2D(_PaintArea1, sampler_PaintArea1, IN.uv);
-                float4 paintArea2 = SAMPLE_TEXTURE2D(_PaintArea2, sampler_PaintArea2, IN.uv);
-
+                //float4 paintArea1 = SAMPLE_TEXTURE2D(_PaintArea1, sampler_PaintArea1, IN.uv);
+                //float4 paintArea2 = SAMPLE_TEXTURE2D(_PaintArea2, sampler_PaintArea2, IN.uv);
+                
                 
                 
                 //绘制区域校正
+                /*
                 mask1.r = adjustPaint(mask1.r, paintArea1.r);
                 mask1.g = adjustPaint(mask1.g, paintArea1.g);
                 mask1.b = adjustPaint(mask1.b, paintArea1.b);
@@ -139,14 +142,17 @@
                 mask2.g = adjustPaint(mask2.g, paintArea2.g);
                 mask2.b = adjustPaint(mask2.b, paintArea2.b);
                 mask2.a = adjustPaint(mask2.a, paintArea2.a);
-                    
+                */
                 
-                float alpha = mask1.r + mask1.g + mask1.b + mask1.a + mask2.r + mask2.g + mask2.b + mask2.a;      
-                
+                float alpha = mask1.r + mask1.g + mask1.b + mask1.a + mask2.r + mask2.g + mask2.b + mask2.a;
+
                 
                 //计算绘制颜色
                 half4 paintColor = mul(_MaskColor1, mask1) + mul(_MaskColor2, half4(mask2));
                 half3 baseColor = lerp(baseMap.rgb, paintColor.rgb, alpha);
+                
+                //绘制油彩部分，高光更强
+                specularMask = saturate(specularMask + (alpha * (paintColor.a-0.5)*0.5f));
                 
                 //计算主光
                 Light light = GetMainLight();

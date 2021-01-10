@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: New Facial Patten
   m_EditorClassIdentifier: 
   icon: {fileID: 2800000, guid: 20addae743296cc4385d4dde22f8196b, type: 3}
-  faceName: 
-  belong: 
-  introduction: 
+  faceName: "\u5F20\u98DE"
+  belong: "\u53E4\u57CE\u4F1A"
+  introduction: "\u4ECB\u7ECD\u4ECB\u7ECD\u4ECB\u7ECD"
   handDang: 0
   puShi: 0
   paintDifficulty: 0

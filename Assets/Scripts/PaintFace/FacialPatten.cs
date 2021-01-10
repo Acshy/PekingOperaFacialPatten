@@ -25,7 +25,7 @@ public class FacialPatten : ScriptableObject
     public PaintDifficulty PaintDifficulty => paintDifficulty;
     [FoldoutGroup("绘制信息")] [LabelText("脸谱难度")] [SerializeField] private PaintDifficulty paintDifficulty;
     public List<Color> ExtraColors => extraColors;
-    [FoldoutGroup("绘制信息")] [LabelText("脸谱颜色")] [ColorPalette("FacialColor")] [SerializeField] private List<Color> extraColors = new List<Color>(4);
+    [FoldoutGroup("绘制信息")] [LabelText("脸谱调色板")] [ColorPalette("FacialColor")] [SerializeField] private List<Color> extraColors = new List<Color>(4);
     public Texture MaskMap => maskMap;
     [FoldoutGroup("绘制信息")] [LabelText("绘制区域Mask")] [PreviewField(100, ObjectFieldAlignment.Left)] [SerializeField] private Texture maskMap;
 
