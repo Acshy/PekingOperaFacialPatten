@@ -387,8 +387,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FaceRenderer: {fileID: 1895297761}
-  AdjustValue: 0.25
-  InterpolateDis: 0.025
+  Correction: 0.25
+  PaintAreaTexture1: {fileID: 2800000, guid: 3f5a9dc2b69db1942b698772e1105182, type: 3}
+  PaintAreaTexture2: {fileID: 2800000, guid: 3f5a9dc2b69db1942b698772e1105182, type: 3}
 --- !u!114 &887724647
 MonoBehaviour:
   m_ObjectHideFlags: 0

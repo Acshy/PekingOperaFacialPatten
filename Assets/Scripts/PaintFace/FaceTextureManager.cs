@@ -66,7 +66,7 @@ public class FaceTextureManager : MonoBehaviour
             SaveRenderTextureToPNG(controlMask1, "TextureSaved_Mask1");
         }
         //每一帧从绘制队列中取值绘制
-        if (PaintActionQueue.Count>0)
+        if (PaintActionQueue.Count > 0)
         {
             StartCoroutine(PaintActionQueue[0]);
             PaintActionQueue.RemoveAt(0);
@@ -80,13 +80,13 @@ public class FaceTextureManager : MonoBehaviour
         }
 
         Vector2 vec2 = lastUV - currentUV;
-        int pointCount=1;
-        if(Vector2.SqrMagnitude(vec2) < 0.25f)
+        int pointCount = 1;
+        if (Vector2.SqrMagnitude(vec2) < 0.25f)
         {
-            pointCount = (int)(Vector2.Distance(new Vector2(vec2.x * baseMap.width, vec2.y * baseMap.height),Vector2.zero) / brush.Size * brush.Continuity);        
+            pointCount = (int)(Vector2.Distance(new Vector2(vec2.x * baseMap.width, vec2.y * baseMap.height), Vector2.zero) / brush.Size * brush.Continuity);
             pointCount = pointCount < 1 ? 1 : pointCount;
         }
-        
+
         Vector2 dir = (lastUV - currentUV).normalized;
         float stepDis = Vector2.Distance(lastUV, currentUV) / pointCount;
 
@@ -95,7 +95,7 @@ public class FaceTextureManager : MonoBehaviour
             PaintActionQueue.Add(DelayPaintColor(lastUV - dir * stepDis * i, brush));
         }
 
-        
+
         //StartCoroutine(PaintColorBetween(pointCount, currentUV, lastUV, brush));//使用协程优化插值
 
         // if (pointCount <= 1 || Vector2.SqrMagnitude(vec2) > 0.25f)
@@ -163,8 +163,17 @@ public class FaceTextureManager : MonoBehaviour
         //获取模型贴图像素值
         Color[] mask1Color = controlMask1.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
         Color[] mask2Color = controlMask2.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
-        Color[] paintAreaColor1 = PaintAreaTexture1.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
-        Color[] paintAreaColor2 = PaintAreaTexture2.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
+        Color[] paintAreaColor;
+
+        //获取绘制区域贴图像素值
+        if (brush.Channel < 4)
+        {
+            paintAreaColor = PaintAreaTexture1.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
+        }
+        else
+        {
+            paintAreaColor = PaintAreaTexture2.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
+        }
 
         //获取笔刷蒙像素版值
         float ratio = (float)brush.BrushMask.width / brush.Size;
@@ -187,7 +196,7 @@ public class FaceTextureManager : MonoBehaviour
 
                 intensity = PaintAreaCorrect(
                     brusMaskColor[index].r * brush.Intensity * inkRemain * 0.1f,
-                    GetPaintAreaColor(brush.Channel, paintAreaColor1[h * brushRangeWidth + w], paintAreaColor2[h * brushRangeWidth + w]));
+                    GetPaintAreaColor(brush.Channel, paintAreaColor[h * brushRangeWidth + w]));
 
                 PaintOnChannel(
                     brush.Channel,
@@ -204,26 +213,18 @@ public class FaceTextureManager : MonoBehaviour
         controlMask1.Apply();
     }
 
-    float GetPaintAreaColor(int channel, Color paintAreaColor1, Color paintAreaColor2)
+    float GetPaintAreaColor(int channel, Color paintAreaColor)
     {
-        switch (channel)
+        switch (channel<4?channel:channel-4)
         {
             case 0:
-                return paintAreaColor1.r;
+                return paintAreaColor.r;
             case 1:
-                return paintAreaColor1.g;
+                return paintAreaColor.g;
             case 2:
-                return paintAreaColor1.b;
+                return paintAreaColor.b;
             case 3:
-                return paintAreaColor1.a;
-            case 4:
-                return paintAreaColor2.r;
-            case 5:
-                return paintAreaColor2.g;
-            case 6:
-                return paintAreaColor2.b;
-            case 7:
-                return paintAreaColor2.a;
+                return paintAreaColor.a;
             default:
                 return 0;
         }

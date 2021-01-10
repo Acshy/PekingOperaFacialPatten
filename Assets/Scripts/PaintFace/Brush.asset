@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ef9ede5cc48fe247bb4eca200202d75, type: 3}
   m_Name: Brush
   m_EditorClassIdentifier: 
-  brushMask: {fileID: 2800000, guid: 47143830b01f1fe48b62126c6c0560c0, type: 3}
-  channel: 0
-  size: 32
+  brushMask: {fileID: 2800000, guid: 73efa477f59410341a2f19d875c3b38f, type: 3}
+  channel: 4
+  size: 64
+  continuity: 4.6
   intensity: 10
-  inkAmount: 1
+  inkAmount: 100

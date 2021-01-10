@@ -29,9 +29,6 @@ public class InteractManager : MonoBehaviour
         currentBrush = new Brush(TestBrush);
     }
 
-    private void OnValidate() {
-         currentBrush = new Brush(TestBrush);
-    }
     void Update()
     {
 
@@ -55,7 +52,7 @@ public class InteractManager : MonoBehaviour
 
                 if (hitInfo.collider.gameObject == FaceTextureManager.Instance.FaceRenderer.gameObject)
                 {
-                    //currentBrush = new Brush(TestBrush);
+                    currentBrush = new Brush(TestBrush);
                     FaceTextureManager.Instance.Paint(hitUV, lasHitUv, currentBrush,pointType);
                     lasHitUv = hitUV;
                 }
