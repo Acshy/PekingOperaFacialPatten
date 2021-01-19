@@ -16,7 +16,7 @@ public class FacialPatten : ScriptableObject
     public HangDang HangDang => handDang;
     [FoldoutGroup("基本信息")] [LabelText("行当")] [SerializeField] private HangDang handDang;
     public PuShi PuShi => puShi;
-    public MainColor MainColor=>mainColor;
+    public MainColor MainColor => mainColor;
     [FoldoutGroup("基本信息")] [LabelText("颜色")] [SerializeField] private MainColor mainColor;
     [FoldoutGroup("基本信息")] [LabelText("谱式")] [SerializeField] private PuShi puShi;
 
@@ -24,7 +24,7 @@ public class FacialPatten : ScriptableObject
     [FoldoutGroup("基本信息")] [LabelText("角色介绍")] [SerializeField] [Multiline] private string infoStory;
     public string InfoFacialPatten => infoFacialPatten;
     [FoldoutGroup("基本信息")] [LabelText("脸谱解读")] [SerializeField] [Multiline] private string infoFacialPatten;
-     public string InfoPaintSkill => infoPaintSkill;
+    public string InfoPaintSkill => infoPaintSkill;
     [FoldoutGroup("基本信息")] [LabelText("绘制技巧")] [SerializeField] [Multiline] private string infoPaintSkill;
 
 
@@ -32,8 +32,8 @@ public class FacialPatten : ScriptableObject
 
     public PaintDifficulty PaintDifficulty => paintDifficulty;
     [FoldoutGroup("绘制信息")] [LabelText("脸谱难度")] [SerializeField] private PaintDifficulty paintDifficulty;
-    public List<Color> ExtraColors => extraColors;
-    [FoldoutGroup("绘制信息")] [LabelText("脸谱调色板")] [ColorPalette("FacialColor")] [SerializeField] private List<Color> extraColors = new List<Color>(4);
+    public Color[] Palette => palette;
+    [FoldoutGroup("绘制信息")] [LabelText("脸谱调色板")] [ColorPalette("FacialColor")] [SerializeField] private Color[] palette=new Color[7];
     public Texture MaskMap => maskMap;
     [FoldoutGroup("绘制信息")] [LabelText("绘制区域Mask")] [PreviewField(100, ObjectFieldAlignment.Left)] [SerializeField] private Texture maskMap;
 
@@ -62,7 +62,7 @@ public enum PuShi
     [LabelText("歪脸")] WaiLian = 7,
     [LabelText("象形脸")] XiangXingLian = 8,
     [LabelText("俊扮")] JunBan = 9,
-    
+
     // [LabelText("神仙脸")] ShengXianLian = 9,
     // [LabelText("小妖脸")] XiaoYaoLian = 10,
     // [LabelText("英雄脸")] YingXiongLian = 11,
