@@ -7,18 +7,26 @@ using Sirenix.OdinInspector;
 public class FacialPatten : ScriptableObject
 {
 
-    public Texture Icon => icon;
-    [FoldoutGroup("基本信息")] [LabelText("预览图")] [PreviewField(100, ObjectFieldAlignment.Left)] [SerializeField] private Texture icon;
+    public Sprite Image => image;
+    [FoldoutGroup("基本信息")] [LabelText("预览图")] [PreviewField(100, ObjectFieldAlignment.Left)] [SerializeField] private Sprite image;
     public string FaceName => faceName;
     [FoldoutGroup("基本信息")] [LabelText("名称")] [SerializeField] private string faceName;
-    public string Belong => belong;
-    [FoldoutGroup("基本信息")] [LabelText("出自")] [SerializeField] private string belong;
-    public string Introduction => introduction;
-    [FoldoutGroup("基本信息")] [LabelText("介绍")] [SerializeField] [Multiline] private string introduction;
+    public string From => from;
+    [FoldoutGroup("基本信息")] [LabelText("出自")] [SerializeField] private string from;
     public HangDang HangDang => handDang;
     [FoldoutGroup("基本信息")] [LabelText("行当")] [SerializeField] private HangDang handDang;
     public PuShi PuShi => puShi;
+    public MainColor MainColor=>mainColor;
+    [FoldoutGroup("基本信息")] [LabelText("颜色")] [SerializeField] private MainColor mainColor;
     [FoldoutGroup("基本信息")] [LabelText("谱式")] [SerializeField] private PuShi puShi;
+
+    public string InfoStory => infoStory;
+    [FoldoutGroup("基本信息")] [LabelText("角色介绍")] [SerializeField] [Multiline] private string infoStory;
+    public string InfoFacialPatten => infoFacialPatten;
+    [FoldoutGroup("基本信息")] [LabelText("脸谱解读")] [SerializeField] [Multiline] private string infoFacialPatten;
+     public string InfoPaintSkill => infoPaintSkill;
+    [FoldoutGroup("基本信息")] [LabelText("绘制技巧")] [SerializeField] [Multiline] private string infoPaintSkill;
+
 
 
 
@@ -35,33 +43,54 @@ public class FacialPatten : ScriptableObject
 [System.Serializable]
 public enum HangDang
 {
-    [LabelText("生")] Sheng = 0,
-    [LabelText("旦")] Dan = 1,
-    [LabelText("净")] Jin = 2,
-    [LabelText("丑")] Chou = 3
+    None = 0,
+    [LabelText("生")] Sheng = 1,
+    [LabelText("旦")] Dan = 2,
+    [LabelText("净")] Jin = 3,
+    [LabelText("丑")] Chou = 4
 }
 [System.Serializable]
 public enum PuShi
 {
-    [LabelText("丑角脸")] ChouJueLian = -2,
-    [LabelText("俊扮")] JunBan = -1,
-    [LabelText("整脸")] ZhengLian = 0,
-    [LabelText("三块瓦")] SanKuaiWa = 1,
-    [LabelText("十字门脸")] ShiZiMengLian = 2,
-    [LabelText("六分脸")] LiuFengLian = 3,
-    [LabelText("碎花脸")] SuiHuaLian = 4,
-    [LabelText("元宝脸")] YuanbaoLian = 5,
-    [LabelText("歪脸")] WaiLian = 6,
-    [LabelText("象形脸")] XiangXingLian = 7,
-    [LabelText("神仙脸")] ShengXianLian = 8,
-    [LabelText("小妖脸")] XiaoYaoLian = 9,
-    [LabelText("英雄脸")] YingXiongLian = 10,
-    [LabelText("僧道脸")] SengDaoLian = 11,
+    None = 0,
+    [LabelText("整脸")] ZhengLian = 1,
+    [LabelText("三块瓦")] SanKuaiWa = 2,
+    [LabelText("十字门脸")] ShiZiMengLian = 3,
+    [LabelText("六分脸")] LiuFengLian = 4,
+    [LabelText("碎花脸")] SuiHuaLian = 5,
+    [LabelText("元宝脸")] YuanbaoLian = 6,
+    [LabelText("歪脸")] WaiLian = 7,
+    [LabelText("象形脸")] XiangXingLian = 8,
+    [LabelText("俊扮")] JunBan = 9,
+    
+    // [LabelText("神仙脸")] ShengXianLian = 9,
+    // [LabelText("小妖脸")] XiaoYaoLian = 10,
+    // [LabelText("英雄脸")] YingXiongLian = 11,
+    // [LabelText("僧道脸")] SengDaoLian = 12,
+    // [LabelText("丑角脸")] ChouJueLian = 13,
 }
+
+[System.Serializable]
+public enum MainColor
+{
+    None = 0,
+    Red = 1,
+    Purple = 2,
+    Black = 3,
+    White = 4,
+    Blue = 5,
+    Green = 6,
+    Yellow = 7,
+    Pink = 8,
+    Goldn = 9,
+    Silver = 10
+}
+
 [System.Serializable]
 public enum PaintDifficulty
 {
-    Easy = 0,
-    Normal = 1,
-    Hard = 2
+    None = 0,
+    Easy = 1,
+    Normal = 2,
+    Hard = 3
 }

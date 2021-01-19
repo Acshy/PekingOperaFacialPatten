@@ -10,14 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28ec068381e275647bd680ace87b52b5, type: 3}
-  m_Name: New Facial Patten
+  m_Name: Test Facial 2
   m_EditorClassIdentifier: 
-  icon: {fileID: 2800000, guid: 20addae743296cc4385d4dde22f8196b, type: 3}
-  faceName: "\u5F20\u98DE"
-  belong: "\u53E4\u57CE\u4F1A"
-  introduction: "\u4ECB\u7ECD\u4ECB\u7ECD\u4ECB\u7ECD"
-  handDang: 0
-  puShi: 0
+  image: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+  faceName: "\u66F9\u64CD"
+  from: "\u6349\u653E\u66F9"
+  handDang: 3
+  mainColor: 4
+  puShi: 1
+  infoStory: "\u66F9\u64CD\u89D2\u8272\u4ECB\u7ECD"
+  infoFacialPatten: "\u66F9\u64CD\u8138\u8C31\u89E3\u8BFB"
+  infoPaintSkill: "\u66F9\u64CD\u7ED8\u5236\u6280\u5DE7"
   paintDifficulty: 0
   extraColors:
   - {r: 0, g: 0, b: 0, a: 0}
