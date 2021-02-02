@@ -38,7 +38,7 @@ public class FaceTextureManager : MonoBehaviour
             return;
         }
 
-        baseMap = (Texture2D)renderer.sharedMaterial.GetTexture("_BaseMap");
+        baseMap =  new Texture2D(256,256);//(Texture2D)renderer.sharedMaterial.GetTexture("_BaseMap");
         Texture2D specularMask = (Texture2D)renderer.sharedMaterial.GetTexture("_SpecularMask");
         controlMask1 = new Texture2D(baseMap.width, baseMap.height, TextureFormat.ARGB32, true, true);
         controlMask2 = new Texture2D(baseMap.width, baseMap.height, TextureFormat.ARGB32, true, true);
@@ -111,7 +111,6 @@ public class FaceTextureManager : MonoBehaviour
     {
         if (baseMap == null)
             return;
-
         float intensity;
         float inkRemain = brush.GetInkPercent();
 

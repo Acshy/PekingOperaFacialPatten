@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ec068381e275647bd680ace87b52b5, type: 3}
+  m_Name: FacialPatten_LvMeng
+  m_EditorClassIdentifier: 
+  PreviewImage: {fileID: 0}
+  FacialPattenTexture: {fileID: 2800000, guid: debcd612655e3bc459a407148b570bd6, type: 3}
+  MaskMap: {fileID: 0}
+  FileName: LvMeng
+  FaceName: "\u5415\u8499"
+  From: "\u8D70\u9EA6\u57CE"
+  HangDang: 3
+  MainColor: 5
+  PuShi: 2
+  InfoFacialPatten: "\u5415\u8499\u4E3A\u84DD\u8272\u4E09\u5757\u74E6\uFF0C\u84DD\u8272\u4EE3\u8868\u5176\u521A\u5F3A\u52C7\u6562\u3002"
+  InfoCharacter: "\u5415\u8499\uFF0C\u65E9\u5E74\u8DDF\u968F\u5B59\u7B56\u5F81\u6218\uFF0C\u4EE5\u80C6\u6C14\u8457\u79F0\u3002\u5B59\u6743\u7EDF\u4E8B\u540E\uFF0C\u5415\u8499\u6E10\u53D7\u91CD\u7528\uFF0C\u4ECE\u7834\u9EC4\u7956\u4F5C\u5148\u767B\uFF0C\u5C01\u6A2A\u91CE\u4E2D\u90CE\u5C06\u3002\u9C81\u8083\u53BB\u4E16\u540E\uFF0C\u5415\u8499\u4EE3\u5B88\u9646\u53E3\uFF0C\u88AD\u53D6\u8346\u5DDE\u897F\u90E8\u4E09\u90E1\uFF0C\u5F7B\u5E95\u51FB\u8D25\u8700\u6C49\u540D\u5C06\u5173\u7FBD\u3002"
+  InfoStory: "\u5B59\u6743\u8054\u9B4F\u653B\u8346\u5DDE\uFF0C\u9063\u5415\u8499\u7763\u5E08\uFF0C\u5415\u8499\u4EE5\u8346\u8944\u4E4B\u95F4\u70FD\u706B\u53F0\u8054\u63A5\uFF0C\u4E0D\u6613\u5F97\u624B\uFF0C\u8BC8\u79F0\u75C5\u3002\u9646\u900A\u732E\u8BA1\u5047\u4EE3\u5415\u8499\u4E3A\u90FD\u7763\u3002\u5173\u7FBD\u8F7B\u4E4B\uFF0C\u4E0D\u4F46\u672A\u52A0\u6212\u5907\uFF0C\u4E14\u64A4\u8346\u5DDE\u4E4B\u5175\u4EE5\u653B\u6A0A\u57CE\u3002\u5415\u8499\u4F3A\u673A\u5360\u70FD\u706B\u53F0\uFF0C\u8FDB\u800C\u88AD\u53D6\u8346\u5DDE\uFF0C\u5E76\u7EA6\u5F90\u6643\u5408\u653B\uFF0C\u5173\u7FBD\u5927\u8D25\u9000\u5B88\u9EA6\u57CE\u3002\u4E58\u591C\u7A81\u56F4\u65F6\u4E2D\u4F0F\u906D\u64D2\u3002"
+  paintDifficulty: 0
+  palette:
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}

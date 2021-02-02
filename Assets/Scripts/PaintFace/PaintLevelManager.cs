@@ -16,9 +16,9 @@ public class PaintLevelManager : MonoBehaviour
     public Renderer FaceRenderer;
 
     //当前绘制的脸谱
-    public FacialPatten CurrentFacialPatten => currentFacialPatten;
-    private FacialPatten currentFacialPatten;
-    public void SetCurrentFace(FacialPatten facialPatten)
+    public FacialPattenScriptableObject CurrentFacialPatten => currentFacialPatten;
+    private FacialPattenScriptableObject currentFacialPatten;
+    public void SetCurrentFace(FacialPattenScriptableObject facialPatten)
     {
         currentFacialPatten = facialPatten;
         UI_ChooseFacialPattenPanel.SetFacialPattenInfo(facialPatten);

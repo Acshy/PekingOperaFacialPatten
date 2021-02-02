@@ -5,12 +5,12 @@ using UnityEngine.UI;
 
 public class UI_FacialPattenBtn : MonoBehaviour
 {
-    private FacialPatten facialPatten;
+    private FacialPattenScriptableObject facialPatten;
     private UI_ChooseFacialPattenPanel panel;
-    public void SetFacialPatternBtn(FacialPatten _facialPatten)
+    public void SetFacialPatternBtn(FacialPattenScriptableObject _facialPatten)
     {
         facialPatten = _facialPatten;
-        GetComponentInChildren<Image>().sprite = facialPatten.Image;
+        GetComponentInChildren<Image>().sprite = facialPatten.PreviewImage;
         GetComponentInChildren<Text>().text = facialPatten.FaceName;
         GetComponent<Button>().onClick.AddListener(OnClick);
         gameObject.SetActive(true);

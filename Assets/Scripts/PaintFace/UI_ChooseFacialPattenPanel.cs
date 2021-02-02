@@ -34,7 +34,7 @@ public class UI_ChooseFacialPattenPanel : MonoBehaviour
 
 
 
-    public List<FacialPatten> FacialPattenList;
+    public List<FacialPattenScriptableObject> FacialPattenList;
     // Start is called before the first frame update
     void Start()
     {
@@ -62,13 +62,13 @@ public class UI_ChooseFacialPattenPanel : MonoBehaviour
 
 
     //设置脸谱信息
-    public void SetFacialPattenInfo(FacialPatten facialPatten)
+    public void SetFacialPattenInfo(FacialPattenScriptableObject facialPatten)
     {
         if (facialPatten == null)
         {
             return;
         }
-        Right_Image.sprite = facialPatten.Image;
+        Right_Image.sprite = facialPatten.PreviewImage;
         Right_Name.text = facialPatten.FaceName;
         Right_From.text = facialPatten.From;
         Right_Name.text = facialPatten.FaceName;
@@ -91,7 +91,7 @@ public class UI_ChooseFacialPattenPanel : MonoBehaviour
         switch (index)
         {
             case 0:
-                Right_TextArea.text = PaintLevelManager.Instance.CurrentFacialPatten.InfoStory;
+                Right_TextArea.text = PaintLevelManager.Instance.CurrentFacialPatten.InfoFacialPatten;
                 Right_InfoStory.alpha=1f;
                 Right_InfoFacialPatten.alpha=0.2f;
                 Right_InfoPaintSkill.alpha=0.2f;
@@ -100,7 +100,7 @@ public class UI_ChooseFacialPattenPanel : MonoBehaviour
                 Right_InfoPaintSkill.enabled = true;
                 return;
             case 1:
-                Right_TextArea.text = PaintLevelManager.Instance.CurrentFacialPatten.InfoFacialPatten;
+                Right_TextArea.text = PaintLevelManager.Instance.CurrentFacialPatten.InfoCharacter;
                 Right_InfoStory.alpha=0.2f;
                 Right_InfoFacialPatten.alpha=1f;
                 Right_InfoPaintSkill.alpha=0.2f;
@@ -109,7 +109,7 @@ public class UI_ChooseFacialPattenPanel : MonoBehaviour
                 Right_InfoPaintSkill.enabled = true;
                 return;
             case 2:
-                Right_TextArea.text = PaintLevelManager.Instance.CurrentFacialPatten.InfoPaintSkill;
+                Right_TextArea.text = PaintLevelManager.Instance.CurrentFacialPatten.InfoStory;
                 Right_InfoStory.alpha=0.2f;
                 Right_InfoFacialPatten.alpha=0.2f;
                 Right_InfoPaintSkill.alpha=1f;
@@ -125,7 +125,7 @@ public class UI_ChooseFacialPattenPanel : MonoBehaviour
     //筛选脸谱操作
     public void OnChangeDropDownValue()
     {
-        List<FacialPatten> facialPattensOnShow = new List<FacialPatten>();
+        List<FacialPattenScriptableObject> facialPattensOnShow = new List<FacialPattenScriptableObject>();
         foreach (var facialPatten in FacialPattenList)
         {
             if ((Left_HangDang.value == 0 || facialPatten.HangDang == (HangDang)Left_HangDang.value)
@@ -137,7 +137,7 @@ public class UI_ChooseFacialPattenPanel : MonoBehaviour
         }
         ShowFacialPattenGroup(facialPattensOnShow);
     }
-    void ShowFacialPattenGroup(List<FacialPatten> facialPattenList)
+    void ShowFacialPattenGroup(List<FacialPattenScriptableObject> facialPattenList)
     {
         for (int i = 0; i < Left_FacialGroup.transform.childCount; i++)
         {

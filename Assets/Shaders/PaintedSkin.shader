@@ -4,6 +4,7 @@
     {
         [MainTexture][NoScaleOffset]_BaseMap ("Base Texture", 2D) = "white" { }
         [MainColor]_BaseColor ("Base Color", Color) = (1, 1, 1, 1)
+        [NoScaleOffset]_FacialPattenTex ("Facial Patten", 2D) ="black" { }
         
         [NoScaleOffset] _SpecularMask ("Specular Mask", 2D) = "white" { }
         _SpecularColor ("SpecularColor", Color) = (1, 1, 1, 1)
@@ -70,11 +71,12 @@
                 float4 positionOS: POSITION;
                 float4 normalOS: NORMAL;
                 float2 uv: TEXCOORD0;
+                float2 uv2: TEXCOORD1;
             };
             struct Varings
             {
                 float4 positionCS: SV_POSITION;
-                float2 uv: TEXCOORD0;
+                float4 uv: TEXCOORD0;
                 float3 positionWS: TEXCOORD1;
                 float3 viewDirWS: TEXCOORD2;
                 float3 normalWS: TEXCOORD3;    // xyz: normal, w: viewDir.x
@@ -82,7 +84,8 @@
                 float3 bitangentWS: TEXCOORD5;    // xyz: bitangent, w: viewDir.z
             };
             
-            TEXTURE2D(_BaseMap);        SAMPLER(sampler_BaseMap);
+            TEXTURE2D(_BaseMap);        SAMPLER(sampler_BaseMap);            
+            TEXTURE2D(_FacialPattenTex);        SAMPLER(sampler_FacialPattenTex);            
             TEXTURE2D(_SpecularMask);   SAMPLER(sampler_SpecularMask);
             TEXTURE2D(_BumpMap);        SAMPLER(sampler_BumpMap);
             TEXTURE2D(_CurveMap);       SAMPLER(sampler_CurveMap);
@@ -106,7 +109,8 @@
                 OUT.normalWS = normalInputs.normalWS;
                 OUT.tangentWS = normalInputs.tangentWS;
                 OUT.bitangentWS = normalInputs.bitangentWS;
-                OUT.uv = TRANSFORM_TEX(IN.uv, _BaseMap);
+                OUT.uv.xy = TRANSFORM_TEX(IN.uv, _BaseMap);
+                OUT.uv.zw = TRANSFORM_TEX(IN.uv2, _BaseMap);                
                 return OUT;
             }
             
@@ -120,17 +124,18 @@
             float4 frag(Varings IN): SV_Target
             {
                 //Sample Texture
-                half4 baseMap = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv);
-                float specularMask = SAMPLE_TEXTURE2D(_SpecularMask, sampler_SpecularMask, IN.uv).r;
-                float curve = SAMPLE_TEXTURE2D(_CurveMap, sampler_CurveMap, IN.uv).r;
-                float3 normalTS = UnpackNormalScale(SAMPLE_TEXTURE2D(_BumpMap, sampler_BumpMap, IN.uv), _BumpScale);
+                half4 baseMap = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv.xy);
+                half4 facialPatten =SAMPLE_TEXTURE2D(_FacialPattenTex, sampler_BaseMap, IN.uv.zw);
+                float specularMask = SAMPLE_TEXTURE2D(_SpecularMask, sampler_SpecularMask, IN.uv.xy).r;
+                float curve = SAMPLE_TEXTURE2D(_CurveMap, sampler_CurveMap, IN.uv.xy).r;
+                float3 normalTS = UnpackNormalScale(SAMPLE_TEXTURE2D(_BumpMap, sampler_BumpMap, IN.uv.xy), _BumpScale);
                 float3 normalWS = normalize(TransformTangentToWorld(normalTS, half3x3(IN.tangentWS, IN.bitangentWS, IN.normalWS)));
-                float4 mask1 = SAMPLE_TEXTURE2D(_ControlMask1, sampler_ControlMask1, IN.uv);
-                float4 mask2 = SAMPLE_TEXTURE2D(_ControlMask2, sampler_ControlMask2, IN.uv);
+                float4 mask1 = SAMPLE_TEXTURE2D(_ControlMask1, sampler_ControlMask1, IN.uv.zw);
+                float4 mask2 = SAMPLE_TEXTURE2D(_ControlMask2, sampler_ControlMask2, IN.uv.zw);
                 //float4 paintArea1 = SAMPLE_TEXTURE2D(_PaintArea1, sampler_PaintArea1, IN.uv);
                 //float4 paintArea2 = SAMPLE_TEXTURE2D(_PaintArea2, sampler_PaintArea2, IN.uv);
                 
-                
+                half3 baseColor = lerp(baseMap.rgb, facialPatten.rgb, facialPatten.a);
                 
                 //绘制区域校正
                 /*
@@ -149,7 +154,7 @@
                 
                 //计算绘制颜色
                 half4 paintColor = mul(_MaskColor1, mask1) + mul(_MaskColor2, half4(mask2));
-                half3 baseColor = lerp(baseMap.rgb, paintColor.rgb, alpha);
+                baseColor = lerp(baseColor, paintColor.rgb, alpha);
                 
                 //绘制油彩部分，高光更强
                 specularMask = saturate(specularMask + (alpha * (paintColor.a - 0.5) * 0.5f) + mask2.a);

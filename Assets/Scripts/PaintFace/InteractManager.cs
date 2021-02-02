@@ -37,23 +37,25 @@ public class InteractManager : MonoBehaviour
             RaycastHit hitInfo = new RaycastHit();
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, float.PositiveInfinity))
             {
-                Vector2 hitUV = hitInfo.textureCoord;
+                Vector2 hitUV = hitInfo.textureCoord2;
+
+                Debug.LogError(hitUV.x + "," + hitUV.y);
                 PointType pointType = PointType.MiddlePoint;
                 if (Input.GetMouseButtonDown(0))
                 {
                     lasHitUv = hitUV;
-                    pointType=PointType.StartPoint;
+                    pointType = PointType.StartPoint;
                 }
-                
-                if(Input.GetMouseButtonUp(0))
+
+                if (Input.GetMouseButtonUp(0))
                 {
-                     pointType=PointType.EndPoint;
+                    pointType = PointType.EndPoint;
                 }
 
                 if (hitInfo.collider.gameObject == FaceTextureManager.Instance.FaceRenderer.gameObject)
                 {
                     currentBrush = new Brush(TestBrush);
-                    FaceTextureManager.Instance.Paint(hitUV, lasHitUv, currentBrush,pointType);
+                    FaceTextureManager.Instance.Paint(hitUV, lasHitUv, currentBrush, pointType);
                     lasHitUv = hitUV;
                 }
             }

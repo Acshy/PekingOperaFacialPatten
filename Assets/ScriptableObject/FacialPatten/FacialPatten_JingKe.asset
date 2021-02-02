@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ec068381e275647bd680ace87b52b5, type: 3}
+  m_Name: FacialPatten_JingKe
+  m_EditorClassIdentifier: 
+  PreviewImage: {fileID: 0}
+  FacialPattenTexture: {fileID: 2800000, guid: e0ecea7e2d4d65f4aac7fe1a4995c779, type: 3}
+  MaskMap: {fileID: 0}
+  FileName: JingKe
+  FaceName: "\u8346\u8F72"
+  From: "\u8346\u8F72\u4F20"
+  HangDang: 3
+  MainColor: 1
+  PuShi: 2
+  InfoFacialPatten: "\u8346\u8F72\u4E3A\u6807\u51C6\u7684\u7EA2\u8272\u4E09\u5757\u74E6\u8138\u3002\u7EA2\u8272\u8C61\u5F81\u5176\u5FE0\u809D\u4E49\u80C6\uFF0C\u5370\u5802\u4E0A\u7ED8\u4E00\u5C16\u9510\u7684\u5315\u9996\uFF0C\u8868\u73B0\u5176\u523A\u5BA2\u8EAB\u4EFD\u3002"
+  InfoCharacter: "\u8346\u8F72\uFF0C\u59DC\u59D3\uFF0C\u5E86\u6C0F\uFF08\u53E4\u65F6\u201C\u8346\u201D\u3001\u201C\u5E86\u201D\u97F3\u8FD1\uFF09\uFF0C\u5B57\u6B21\u975E\_\uFF0C\u6218\u56FD\u672B\u671F\u536B\u56FD\u671D\u6B4C\u4EBA\uFF0C\u6218\u56FD\u65F6\u671F\u8457\u540D\u523A\u5BA2\u3002\u88AB\u71D5\u56FD\u592A\u5B50\u4E39\u6D3E\u9063\u523A\u6740\u79E6\u738B\u5B34\u653F\uFF0C\u884C\u523A\u5931\u8D25\u540E\u88AB\u6740\u3002"
+  InfoStory: "\u71D5\u56FD\u592A\u5B50\u4E39\u62DB\u52DF\u8346\u8F72\u523A\u6740\u79E6\u738B\u3002\u5F85\u8346\u8F72\u4EE5\u4E0A\u5BBE\u4E4B\u793C\uFF0C\u7528\u7763\u4EA2\u5730\u56FE\u5E76\u79E6\u4EC7\u6A0A\u4E8E\u671F\u5934\u9885\uFF0C\u9063\u8346\u8F72\u6000\u5315\u9996\u8D74\u79E6\u8BC8\u964D\uFF0C\u8C0B\u523A\u79E6\u738B\u3002\u71D5\u4E39\u4E0E\u5BBE\u5BA2\u4FF1\u767D\u8863\u9001\u522B\u4E8E\u6613\u6C34\u4E4B\u4E0A\u3002\u8346\u8F72\u81F3\u79E6\u540E\uFF0C\u523A\u79E6\u738B\u672A\u4E2D\uFF0C\u5927\u95F9\u79E6\u5EAD\uFF0C\u867D\u672A\u6210\u529F\uFF0C\u5343\u53E4\u58EE\u5176\u4FA0\u70C8\u3002"
+  paintDifficulty: 0
+  palette:
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
