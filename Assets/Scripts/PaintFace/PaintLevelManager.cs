@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 
 public class PaintLevelManager : MonoBehaviour
@@ -22,33 +23,44 @@ public class PaintLevelManager : MonoBehaviour
     {
         currentFacialPatten = facialPatten;
         UI_ChooseFacialPattenPanel.SetFacialPattenInfo(facialPatten);
-        SetPalette(facialPatten.Palette);
+        SetPalette(facialPatten.MainColor);
+        SetFacialPattenTexture(facialPatten.FacialPattenTexture);
         //TODO:设置角色模型的脸谱贴图
     }
 
-
-
-
-
-
     //当前调色板
-    public Color[] CurrentPalette ;//=> CurrentPalette;
-    //[SerializeField] private Color[] CurrentPalette;
-    void SetPalette(Color[] palette)
+    public Color[] CurrentPalette;
+    //private Color[] currentPalette;
+    void SetPalette(MainColor mainColor)
     {
-        CurrentPalette = palette;
+        if (mainColor == MainColor.Purple)
+        {
+            Color temp = CurrentPalette[7];
+            CurrentPalette[7] = CurrentPalette[8];
+            CurrentPalette[8] = temp;
+        }
         SetPaletteInShader();
     }
     public void SetPaletteInShader()
     {
         Matrix4x4 channelColorsMat = new Matrix4x4(CurrentPalette[0], CurrentPalette[1], CurrentPalette[2], CurrentPalette[3]);
         Shader.SetGlobalMatrix("_MaskColor1", channelColorsMat);
-        CurrentPalette[7] = Color.black;//第八个通道用来抹油，不上色
         channelColorsMat = new Matrix4x4(CurrentPalette[4], CurrentPalette[5], CurrentPalette[6], CurrentPalette[7]);
         Shader.SetGlobalMatrix("_MaskColor2", channelColorsMat);
     }
+    
+    public void SetFacialPattenTexture(Texture texture)
+    {
+        FaceRenderer.material.SetTexture("_FacialPattenTex",texture);
+        FaceRenderer.material.SetFloat("_FacialPattenIntensity",0);
+        DOTween.Kill(FaceRenderer.material);
+        FaceRenderer.material.DOFloat(0.75f,"_FacialPattenIntensity",0.6f);
+    }
 
-
+    private void OnValidate()
+    {
+        SetPaletteInShader();
+    }
 
     void Start()
     {

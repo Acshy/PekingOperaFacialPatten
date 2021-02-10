@@ -6,6 +6,7 @@ public class Brush : MonoBehaviour
 {
     public Texture2D BrushMask;
     public int Channel;
+    public float SurfaceSmoothness;
     public int Size;
     public float Continuity;
     public float Intensity;
@@ -42,6 +43,7 @@ public class Brush : MonoBehaviour
         InkAmount = brush.InkAmount;
         Continuity = brush.Continuity;
         BrushType = brush.BrushType;
+        SurfaceSmoothness= brush.SurfaceSmoothness;
         ResetInk();
     }
 }

@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28ec068381e275647bd680ace87b52b5, type: 3}
   m_Name: FacialPatten_LiMi
   m_EditorClassIdentifier: 
-  PreviewImage: {fileID: 0}
+  PreviewImage: {fileID: 21300000, guid: 0d53e9b378179d24ea16ce3461659a9a, type: 3}
   FacialPattenTexture: {fileID: 2800000, guid: d3c6a96245916434bace51f876ee6cdf, type: 3}
-  MaskMap: {fileID: 0}
+  MaskMap1: {fileID: 2800000, guid: 2a6fc5862a902a3419a3cc2aa8ae6f3a, type: 3}
+  MaskMap2: {fileID: 2800000, guid: a269d660287e1794d91a6000be838677, type: 3}
   FileName: LiMi
   FaceName: "\u674E\u5BC6 "
   From: "\u65AD\u5BC6\u6DA7"
@@ -24,12 +25,3 @@ MonoBehaviour:
   InfoFacialPatten: "\u674E\u5BC6\u4E3A\u7D2B\u8272\u4E09\u5757\u74E6\uFF0C\u7D2B\u8272\u4EE3\u8868\u5176\u803F\u76F4\u3001\u679C\u65AD\u3001\u6C89\u7A33\u3002\u8138\u4E0A\u5927\u9762\u79EF\u767D\u8272\uFF0C\u4EE3\u8868\u5176\u4E0D\u4EE5\u771F\u9762\u76EE\u4E16\u4EBA\uFF0C\u5185\u5FC3\u5978\u8BC8\u3002"
   InfoCharacter: "\u674E\u5BC6\uFF0C\u5B57\u7384\u9083\uFF0C\u4E00\u5B57\u6CD5\u4E3B\uFF0C\u4EAC\u5146\u90E1\u957F\u5B89\u53BF\uFF0C\u968B\u672B\u5510\u521D\u5272\u636E\u7FA4\u96C4\u4E4B\u4E00\u3002\u897F\u9B4F\u540D\u5C06\u674E\u5F3C\u7684\u66FE\u5B59\u3002"
   InfoStory: "\u300A\u65AD\u5BC6\u6DA7\u300B\u5C5E\u4EAC\u5267\u4F20\u7EDF\u5267\u76EE\uFF0C\u4E00\u540D\u300A\u53CC\u6295\u5510\u300B\uFF0C\u5C5E\u82B1\u8138\u548C\u8001\u751F\u7684\u5531\u529F\u620F\uFF0C\u8BF8\u591A\u4EAC\u5267\u540D\u5BB6\u64C5\u6F14\u6B64\u5267\u3002\u8BB2\u7684\u662F\u74E6\u5C97\u6563\u5C06\uFF0C\u674E\u5BC6\u5148\u6295\u5510\u540E\u53CD\u5510\uFF0C\u6B7B\u5728\u65AD\u5BC6\u6DA7\u7684\u6545\u4E8B\u3002"
-  paintDifficulty: 0
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}

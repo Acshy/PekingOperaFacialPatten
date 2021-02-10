@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28ec068381e275647bd680ace87b52b5, type: 3}
   m_Name: FacialPatten_JiLiao
   m_EditorClassIdentifier: 
-  PreviewImage: {fileID: 0}
+  PreviewImage: {fileID: 21300000, guid: 135b21ef226a1bc42b943a5709b77e05, type: 3}
   FacialPattenTexture: {fileID: 2800000, guid: 4e174524c1b0e76489e173f808f60635, type: 3}
-  MaskMap: {fileID: 0}
+  MaskMap1: {fileID: 2800000, guid: 7bfb18b59a28672438bdc0126efb90e1, type: 3}
+  MaskMap2: {fileID: 2800000, guid: fd058966cbd6ad64c88a4821d44aa53f, type: 3}
   FileName: JiLiao
   FaceName: "\u59EC\u50DA"
   From: "\u9C7C\u80A0\u5251"
@@ -24,12 +25,3 @@ MonoBehaviour:
   InfoFacialPatten: "\u59EC\u50DA\u5C5E\u4E8E\u9EC4\u4E09\u5757\u74E6\u8138,\u8868\u793A\u4EBA\u7269\u51F6\u66B4\u6B8B\u5FCD\uFF0C\u5DE5\u4E8E\u5FC3\u8BA1\u3002"
   InfoCharacter: "\u59EC\u50DA\uFF0C\u6625\u79CB\u65F6\u671F\u5434\u56FD\u56FD\u541B\u3002\u5434\u738B\u50DA\uFF08\uFF1F\uFF0D\u524D515\u5E74\uFF09\uFF0C\u59EC\u59D3\uFF0C\u540D\u50DA\uFF0C\u53C8\u540D\u5DDE\u4E8E\uFF0C\u5434\u738B\u9980\u771C\u7684\u5EB6\u957F\u5B50\u3002\u6625\u79CB\u65F6\u671F\u5434\u56FD\u7B2C23\u4EFB\u541B\u4E3B\u3002\u540E\u88AB\u5176\u5802\u5F1F\u516C\u5B50\u5149\u7684\u523A\u5BA2\u4E13\u8BF8\u523A\u6740\u3002"
   InfoStory: "\u5434\u516C\u5B50\u5149\uFF08\u5434\u738B\u9616\u95FE\uFF09\u6B32\u6740\u738B\u50DA\u81EA\u7ACB\uFF0C\u4F0D\u5B50\u80E5\u628A\u4ED6\u63A8\u8350\u7ED9\u516C\u5B50\u5149\u3002\u516C\u5B50\u5149\u4E0E\u4E13\u8BF8\u5BC6\u8C0B\uFF0C\u4EE5\u5BB4\u8BF7\u5434\u738B\u50DA\u4E3A\u540D\uFF0C\u85CF\u5315\u9996\u4E8E\u9C7C\u8179\u4E4B\u4E2D\u8FDB\u732E\uFF08\u9C7C\u80A0\u5251\uFF09\uFF0C\u5F53\u573A\u523A\u6740\u5434\u738B\u50DA\uFF0C\u4E13\u8BF8\u4E5F\u88AB\u5434\u738B\u50DA\u7684\u4F8D\u536B\u6740\u6B7B\u3002"
-  paintDifficulty: 0
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}

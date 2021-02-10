@@ -43,6 +43,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _FacialPattenTex:
+        m_Texture: {fileID: 2800000, guid: a59986896cecbc04ca021351df5ad698, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _PaintArea1:
         m_Texture: {fileID: 2800000, guid: 3f5a9dc2b69db1942b698772e1105182, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -64,9 +68,10 @@ Material:
     - _Correction: 0
     - _Cutoff: 0
     - _EmissionScale: 0.2
+    - _FacialPattenIntensity: 0.356
     - _SSSScale: 1
     - _Smoothness: 10
     - _SpcularGloss: 100
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SpecularColor: {r: 1, g: 0.8745099, b: 0.70980394, a: 1}

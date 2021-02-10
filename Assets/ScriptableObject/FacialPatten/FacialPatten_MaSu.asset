@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28ec068381e275647bd680ace87b52b5, type: 3}
   m_Name: FacialPatten_MaSu
   m_EditorClassIdentifier: 
-  PreviewImage: {fileID: 0}
+  PreviewImage: {fileID: 21300000, guid: 87a1b84fb7453d745a2231ec92b64fdd, type: 3}
   FacialPattenTexture: {fileID: 2800000, guid: d64a65584928d844bad6e9904551591b, type: 3}
-  MaskMap: {fileID: 0}
+  MaskMap1: {fileID: 2800000, guid: 1ab57189f1fbd234dbdeea796c0fc91d, type: 3}
+  MaskMap2: {fileID: 2800000, guid: 656e58c48af992144bca27e98b6911c9, type: 3}
   FileName: MaSu
   FaceName: "\u9A6C\u8C21"
   From: "\u5931\u8857\u4EAD"
@@ -25,12 +26,3 @@ MonoBehaviour:
   InfoCharacter: "\u9A6C\u8C21\uFF0C\u5B57\u5E7C\u5E38\uFF0C\u4F8D\u4E2D\u9A6C\u826F\u4E4B\u5F1F\uFF0C\u4E09\u56FD\u65F6\u671F\u8700\u6C49\u5B98\u5458\u3001\u5C06\u9886\u3002\u5EFA\u5174\u516D\u5E74\uFF0C\u9A6C\u8C21\u5728\u8BF8\u845B\u4EAE\u5317\u4F10\u65F6\uFF0C\u56E0\u8FDD\u80CC\u8BF8\u845B\u4EAE\u4F5C\u6218\u6307\u4EE4\uFF0C\u800C\u5BFC\u81F4\u8857\u4EAD\u5931\u5B88\uFF0C\u8700\u519B\u64A4\u519B\u540E\uFF0C\u9A6C\u8C21\u88AB\u8BF8\u845B\u4EAE\u5904\u6B7B\uFF0C
     \u53E6\u8BF4\u6B7B\u4E8E\u72F1\u4E2D\u3002"
   InfoStory: "\u4E09\u56FD\u65F6\uFF0C\u8700\u9B4F\u4EA4\u5175\uFF0C\u53F8\u9A6C\u61FF\u7EDF\u9886\u9B4F\u519B\u5175\u81F3\u7941\u5C71\uFF0C\u8BF8\u845B\u4EAE\u6599\u5B9A\u9B4F\u519B\u5FC5\u593A\u6C49\u4E2D\u54BD\u5589\u8981\u5730\u8857\u4EAD\uFF0C\u9009\u5C06\u9632\u5B88\uFF1B\u9A6C\u8C21\u8BF7\u4EE4\u524D\u5F80\uFF1B\u884C\u524D\uFF0C\u8BF8\u845B\u4EAE\u518D\u4E09\u5631\u5490\uFF0C\u5207\u987B\u614E\u9009\u8425\u5730\u3002\u5E76\u547D\u738B\u5E73\u540C\u5F80\u76F8\u4F50\u3002\u9A6C\u8C21\u521A\u610E\u81EA\u7528\uFF0C\u4E0D\u542C\u738B\u5E73\u8C0F\u8A00\uFF0C\u624E\u8425\u5C71\u9876\uFF0C\u81F4\u906D\u9B4F\u519B\u56F4\u653B\uFF0C\u8857\u4EAD\u5931\u5B88\u3002"
-  paintDifficulty: 0
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}

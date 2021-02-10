@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28ec068381e275647bd680ace87b52b5, type: 3}
   m_Name: FacialPatten_XiaHouDun
   m_EditorClassIdentifier: 
-  PreviewImage: {fileID: 0}
-  FacialPattenTexture: {fileID: 0}
-  MaskMap: {fileID: 0}
+  PreviewImage: {fileID: 21300000, guid: 989e40f0560b01f4d9143df432f6a40d, type: 3}
+  FacialPattenTexture: {fileID: 2800000, guid: e08cd3f69da3f624ea8f6ba871884b66, type: 3}
+  MaskMap1: {fileID: 2800000, guid: fbdf2198c755f92429f0b768918a3afb, type: 3}
+  MaskMap2: {fileID: 2800000, guid: a8ec646915159c54abe3cfc2cf88cfa3, type: 3}
   FileName: XiaHouDun
   FaceName: "\u590F\u4FAF\u60C7"
   From: "\u535A\u671B\u5761"
@@ -24,12 +25,3 @@ MonoBehaviour:
   InfoFacialPatten: "\u590F\u4FAF\u60C7\u4E3A\u84DD\u8272\u4E09\u5757\u74E6\uFF0C\u84DD\u8272\u4EE3\u8868\u5176\u521A\u5F3A\u52C7\u6562\u3002\u5DE6\u773C\u4E0B\u6709\u706B\u7EB9\uFF0C\u8868\u793A\u5176\u5DE6\u773C\u88AB\u5C04\u778E\u3002"
   InfoCharacter: "\u590F\u4FAF\u60C7\uFF0C\u5B57\u5143\u8BA9\u3002\u6C49\u672B\u4E09\u56FD\u65F6\u671F\u66F9\u9B4F\u540D\u5C06\uFF0C\u897F\u6C49\u5F00\u56FD\u5143\u52CB\u590F\u4FAF\u5A74\u7684\u540E\u4EE3\u3002\u66F9\u64CD\u8D77\u5175\uFF0C\u590F\u4FAF\u60C7\u662F\u5176\u6700\u65E9\u7684\u5C06\u9886\u4E4B\u4E00\u3002\u4E0E\u5415\u5E03\u519B\u4EA4\u6218\u65F6\uFF0C\u66FE\u4E00\u5EA6\u88AB\u64D2\u4E3A\u4EBA\u8D28\uFF0C\u53C8\u88AB\u6D41\u77E2\u5C04\u778E\u5DE6\u773C\u3002"
   InfoStory: "\u66F9\u64CD\u547D\u590F\u4FAF\u60C7\u653B\u65B0\u91CE\uFF0C\u5218\u5907\u6C42\u8BA1\u4E8E\u8BF8\u845B\u4EAE\uFF1B\u8BF8\u845B\u5206\u9063\u8BF8\u5C06\u8BBE\u4F0F\uFF0C\u5F20\u98DE\u4E0D\u670D\uFF1B\u66F9\u5175\u81F3\uFF0C\u8BF8\u845B\u4EAE\u706B\u70E7\u535A\u671B\u5761\uFF0C\u5927\u8D25\u66F9\u5175\uFF0C\u5F20\u98DE\u5FC3\u670D\uFF0C\u8D1F\u8346\u8BF7\u7F6A\u3002"
-  paintDifficulty: 0
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}

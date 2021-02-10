@@ -13,10 +13,10 @@ public class FacialPattenScriptableObject : ScriptableObject
         string textureImagePath,
         string maskImagePath)
     {
-        PreviewImage = AssetDatabase.LoadAssetAtPath<Sprite>(iconImagePath + "" + obj.FileName + ".png");
-        FacialPattenTexture = AssetDatabase.LoadAssetAtPath<Texture>(textureImagePath +"" + obj.FileName + ".png");
-        MaskMap1 = AssetDatabase.LoadAssetAtPath<Texture>(maskImagePath + ""+obj.FileName + "_1.png");
-        MaskMap2 = AssetDatabase.LoadAssetAtPath<Texture>(maskImagePath + ""+obj.FileName + "_2.png");
+        PreviewImage = AssetDatabase.LoadAssetAtPath<Sprite>(iconImagePath + "Sprite_FacialPattenPreview_" + obj.FileName + ".png");
+        FacialPattenTexture = AssetDatabase.LoadAssetAtPath<Texture>(textureImagePath + "Texture_FacialPattenTexture_" + obj.FileName + ".png");
+        MaskMap1 = AssetDatabase.LoadAssetAtPath<Texture>(maskImagePath + "Texture_FacialPattenTexture_" + obj.FileName + "_mask1.png");
+        MaskMap2 = AssetDatabase.LoadAssetAtPath<Texture>(maskImagePath + "Texture_FacialPattenTexture_" + obj.FileName + "_mask2.png");
         FileName = obj.FileName;
         FaceName = obj.FaceName;
         From = obj.From;
@@ -28,12 +28,13 @@ public class FacialPattenScriptableObject : ScriptableObject
         InfoStory = obj.InfoStory;
     }
 
-    [PropertySpace(SpaceBefore = 60, SpaceAfter = 60)]
+    [PropertySpace(SpaceBefore = 30, SpaceAfter = 30)]
     [HideLabel] [PreviewField(100, ObjectFieldAlignment.Left)] [HorizontalGroup("row1", 120)] [SerializeField] public Sprite PreviewImage;
-    [PropertySpace(SpaceBefore = 60, SpaceAfter = 60)]
-    [HideLabel] [PreviewField(100, ObjectFieldAlignment.Center)] [HorizontalGroup("row1", 120)] [SerializeField] public Texture FacialPattenTexture;
-    [PropertySpace(SpaceBefore = 60, SpaceAfter = 60)]
+    [PropertySpace(SpaceBefore = 30, SpaceAfter = 30)]
+    [HideLabel] [PreviewField(100, ObjectFieldAlignment.Left)] [HorizontalGroup("row1", 120)] [SerializeField] public Texture FacialPattenTexture;
+    [PropertySpace(SpaceBefore = 30, SpaceAfter = 30)]
     [HideLabel] [PreviewField(60, ObjectFieldAlignment.Right)] [HorizontalGroup("row1", 60)] [SerializeField] public Texture MaskMap1;
+    [PropertySpace(SpaceBefore = 30, SpaceAfter = 30)]
     [HideLabel] [PreviewField(60, ObjectFieldAlignment.Right)] [HorizontalGroup("row1", 60)] [SerializeField] public Texture MaskMap2;
 
     [FoldoutGroup("基本信息")] [LabelText("文件名称")] [SerializeField] public string FileName;
@@ -47,12 +48,6 @@ public class FacialPattenScriptableObject : ScriptableObject
     [FoldoutGroup("基本信息")] [LabelText("角色介绍")] [SerializeField] [Multiline] public string InfoCharacter;
     [FoldoutGroup("基本信息")] [LabelText("戏曲故事")] [SerializeField] [Multiline] public string InfoStory;
 
-
-
-
-    [FoldoutGroup("绘制信息")] [LabelText("脸谱难度")] [SerializeField] public PaintDifficulty paintDifficulty;
-    public Color[] Palette => palette;
-    [FoldoutGroup("绘制信息")] [LabelText("脸谱调色板")] [ColorPalette("FacialColor")] [SerializeField] public Color[] palette = new Color[7];
 }
 
 [System.Serializable]
@@ -99,13 +94,4 @@ public enum MainColor
     Pink = 8,
     Goldn = 9,
     Silver = 10
-}
-
-[System.Serializable]
-public enum PaintDifficulty
-{
-    None = 0,
-    Easy = 1,
-    Normal = 2,
-    Hard = 3
 }

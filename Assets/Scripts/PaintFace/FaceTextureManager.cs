@@ -14,8 +14,9 @@ public class FaceTextureManager : MonoBehaviour
 
     public Renderer FaceRenderer;
     Texture2D baseMap;
-    Texture2D controlMask1;
-    Texture2D controlMask2;
+    Texture2D colorMask1;
+    Texture2D colorMask2;
+    Texture2D specularMask;
 
     public float Correction;
     public Texture2D PaintAreaTexture1;
@@ -38,32 +39,34 @@ public class FaceTextureManager : MonoBehaviour
             return;
         }
 
-        baseMap =  new Texture2D(256,256);//(Texture2D)renderer.sharedMaterial.GetTexture("_BaseMap");
-        Texture2D specularMask = (Texture2D)renderer.sharedMaterial.GetTexture("_SpecularMask");
-        controlMask1 = new Texture2D(baseMap.width, baseMap.height, TextureFormat.ARGB32, true, true);
-        controlMask2 = new Texture2D(baseMap.width, baseMap.height, TextureFormat.ARGB32, true, true);
+        baseMap = new Texture2D(512, 512);//(Texture2D)renderer.sharedMaterial.GetTexture("_BaseMap");
+        colorMask1 = new Texture2D(baseMap.width, baseMap.height, TextureFormat.ARGB32, true, true);
+        colorMask2 = new Texture2D(baseMap.width, baseMap.height, TextureFormat.ARGB32, true, true);
+        specularMask = new Texture2D(baseMap.width, baseMap.height, TextureFormat.ARGB32, true, true);
 
         for (int x = 0; x < baseMap.width; x++)
         {
             for (int y = 0; y < baseMap.height; y++)
             {
-                controlMask1.SetPixel(x, y, new Color(0, 0, 0, 0));
-                controlMask2.SetPixel(x, y, new Color(0, 0, 0, 0));
+                colorMask1.SetPixel(x, y, new Color(0, 0, 0, 0));
+                colorMask2.SetPixel(x, y, new Color(0, 0, 0, 0));
+                specularMask.SetPixel(x, y, new Color(0, 0, 0, 0));
             }
         }
-        //resultBaseMap.Apply();
-        controlMask1.Apply();
-        controlMask2.Apply();
-        //renderer.material.SetTexture("_BaseMap", resultBaseMap);
-        renderer.material.SetTexture("_ControlMask1", controlMask1);
-        renderer.material.SetTexture("_ControlMask2", controlMask2);
+        colorMask1.Apply();
+        colorMask2.Apply();
+        specularMask.Apply();
+
+        renderer.material.SetTexture("_ControlMask1", colorMask1);
+        renderer.material.SetTexture("_ControlMask2", colorMask2);
+        renderer.material.SetTexture("_SpecularMask2", specularMask);
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.S))
         {
-            SaveRenderTextureToPNG(controlMask1, "TextureSaved_Mask1");
+            SaveRenderTextureToPNG(colorMask1, "TextureSaved_Mask1");
         }
         //每一帧从绘制队列中取值绘制
         if (PaintActionQueue.Count > 0)
@@ -111,7 +114,7 @@ public class FaceTextureManager : MonoBehaviour
     {
         if (baseMap == null)
             return;
-        float intensity;
+        float correction;
         float inkRemain = brush.GetInkPercent();
 
         int x, y;//笔刷贴图在模型贴图上的起始点位置
@@ -150,8 +153,9 @@ public class FaceTextureManager : MonoBehaviour
         if (brush.BrushType == BrushType.Color)
         {
             //获取控制模型贴图像素值
-            Color[] mask1Color = controlMask1.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
-            Color[] mask2Color = controlMask2.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
+            Color[] colorMask1Color = colorMask1.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
+            Color[] colorMask2Color = colorMask2.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
+            Color[] specularMaskColor = specularMask.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
 
             //获取绘制区域贴图像素值
             Color[] paintAreaColor;
@@ -173,28 +177,34 @@ public class FaceTextureManager : MonoBehaviour
                     index_brush = (int)(h * ratio) * (int)(brushRangeWidth * ratio) + (int)(w * ratio);
                     index_brush = Mathf.Min(index_brush, brusMaskColor.Length - 1);
 
-                    intensity = PaintAreaCorrect(
-                        brusMaskColor[index_brush].r * brush.Intensity * inkRemain,
+                    correction = CorrectPainArea(
+                        brusMaskColor[index_brush].r * inkRemain,
                         GetPaintAreaColor(brush.Channel, paintAreaColor[h * brushRangeWidth + w]));
 
                     PaintColorOnChannel(
                         brush.Channel,
-                        intensity,
-                        ref mask1Color[h * brushRangeWidth + w],
-                        ref mask2Color[h * brushRangeWidth + w]);
+                        brusMaskColor[index_brush].r * brush.Intensity * correction,
+                        ref colorMask1Color[h * brushRangeWidth + w],
+                        ref colorMask2Color[h * brushRangeWidth + w]);
+                    PaintSmoothness(
+                        brush.SurfaceSmoothness,
+                        brusMaskColor[index_brush].r * brush.Intensity * correction,
+                        ref specularMaskColor[h * brushRangeWidth + w]);
                 }
             }
 
-            controlMask1.SetPixels(x, y, brushRangeWidth, brushRangeHeight, mask1Color, 0);
-            controlMask2.SetPixels(x, y, brushRangeWidth, brushRangeHeight, mask2Color, 0);
-            controlMask2.Apply();
-            controlMask1.Apply();
+            colorMask1.SetPixels(x, y, brushRangeWidth, brushRangeHeight, colorMask1Color, 0);
+            colorMask2.SetPixels(x, y, brushRangeWidth, brushRangeHeight, colorMask2Color, 0);
+            specularMask.SetPixels(x, y, brushRangeWidth, brushRangeHeight, specularMaskColor, 0);
+            colorMask2.Apply();
+            colorMask1.Apply();
+            specularMask.Apply();
         }
         else if (brush.BrushType == BrushType.Smudge)
         {
             //获取控制模型贴图像素值
-            Color[] mask1Color = controlMask1.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
-            Color[] mask2Color = controlMask2.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
+            Color[] mask1Color = colorMask1.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
+            Color[] mask2Color = colorMask2.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
 
             if (lastFrameMask1Color != null && lastFrameMask2Color != null)
             {
@@ -209,9 +219,7 @@ public class FaceTextureManager : MonoBehaviour
                         index_brush = (int)(h * ratio) * (int)(brushRangeWidth * ratio) + (int)(w * ratio);
                         index_brush = Mathf.Min(index_brush, brusMaskColor.Length - 1);
                         index_lastFrame = Mathf.Min(h * brushRangeWidth + w, lastFrameMask1Color.Length - 1);
-
-                        intensity = brusMaskColor[index_brush].r * brush.Intensity * inkRemain;
-
+                        float intensity = brusMaskColor[index_brush].r * brush.Intensity * inkRemain;
                         PaintSmudge(
                             intensity,
                             lastFrameMask1Color[index_lastFrame],
@@ -225,15 +233,15 @@ public class FaceTextureManager : MonoBehaviour
             lastFrameMask1Color = mask1Color;
             lastFrameMask2Color = mask2Color;
 
-            controlMask1.SetPixels(x, y, brushRangeWidth, brushRangeHeight, mask1Color, 0);
-            controlMask2.SetPixels(x, y, brushRangeWidth, brushRangeHeight, mask2Color, 0);
-            controlMask2.Apply();
-            controlMask1.Apply();
+            colorMask1.SetPixels(x, y, brushRangeWidth, brushRangeHeight, mask1Color, 0);
+            colorMask2.SetPixels(x, y, brushRangeWidth, brushRangeHeight, mask2Color, 0);
+            colorMask2.Apply();
+            colorMask1.Apply();
         }
         else if (brush.BrushType == BrushType.Smooth)
         {
             //获取控制模型贴图像素值
-            Color[] mask2Color = controlMask2.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
+            Color[] specularMaskColor = specularMask.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
 
 
             int index_brush = 0;
@@ -246,14 +254,17 @@ public class FaceTextureManager : MonoBehaviour
                     index_brush = (int)(h * ratio) * (int)(brushRangeWidth * ratio) + (int)(w * ratio);
                     index_brush = Mathf.Min(index_brush, brusMaskColor.Length - 1);
 
-                    intensity = brusMaskColor[index_brush].r * brush.Intensity * inkRemain;
+                    correction = brusMaskColor[index_brush].r * brush.Intensity * inkRemain;
 
-                    mask2Color[h * brushRangeWidth + w].a = Mathf.Clamp01(mask2Color[h * brushRangeWidth + w].a + intensity*0.1f);
+                    PaintSmoothness(
+                        brush.SurfaceSmoothness,
+                        brusMaskColor[index_brush].r * brush.Intensity ,
+                         ref specularMaskColor[h * brushRangeWidth + w]);
                 }
             }
 
-            controlMask2.SetPixels(x, y, brushRangeWidth, brushRangeHeight, mask2Color, 0);
-            controlMask2.Apply();
+            specularMask.SetPixels(x, y, brushRangeWidth, brushRangeHeight, specularMaskColor, 0);
+            specularMask.Apply();
         }
 
 
@@ -281,26 +292,46 @@ public class FaceTextureManager : MonoBehaviour
 
     public void PaintColorOnChannel(int channel, float channelValue, ref Color mask1, ref Color mask2)
     {
-        mask1.r = Mathf.Lerp(mask1.r, channel == 0 ? 1 : 0, channelValue);
-        mask1.g = Mathf.Lerp(mask1.g, channel == 1 ? 1 : 0, channelValue);
-        mask1.b = Mathf.Lerp(mask1.b, channel == 2 ? 1 : 0, channelValue);
-        mask1.a = Mathf.Lerp(mask1.a, channel == 3 ? 1 : 0, channelValue);
-        mask2.r = Mathf.Lerp(mask2.r, channel == 4 ? 1 : 0, channelValue);
-        mask2.g = Mathf.Lerp(mask2.g, channel == 5 ? 1 : 0, channelValue);
-        mask2.b = Mathf.Lerp(mask2.b, channel == 6 ? 1 : 0, channelValue);
-        //mask2.a = Mathf.Lerp(mask2.a, channel == 7 ? 1 : 0, channelValue);//这个通道拿来抹油
+        if (channel < 4)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if (i == channel)
+                    mask1[i] = Mathf.Clamp01(mask1[i] + channelValue);
+                else
+                    mask1[i] = Mathf.Clamp01(mask1[i] - channelValue);
+
+                mask2[i] = Mathf.Clamp01(mask2[i] - channelValue);
+            }
+        }
+        else
+        {
+            channel -= 4;
+            for (int i = 0; i < 4; i++)
+            {
+                if (i == channel)
+                    mask2[i] = Mathf.Clamp01(mask2[i] + channelValue);
+                else
+                    mask2[i] = Mathf.Clamp01(mask2[i] - channelValue);
+
+                mask1[i] = Mathf.Clamp01(mask1[i] - channelValue);
+            }
+        }
     }
     float Smoothstep(float t1, float t2, float x)
     {
         x = Mathf.Clamp01((x - t1) / (t2 - t1));
         return x;
     }
-    float PaintAreaCorrect(float channelValue, float paintAreaValue)
+    float CorrectPainArea(float channelValue, float paintAreaValue)
     {
 
         return Smoothstep(Correction, 1, channelValue + paintAreaValue * Correction);
     }
-
+    public void PaintSmoothness(float Smoothness, float intensity, ref Color mask)
+    {
+        mask = Color.Lerp(mask,new Color(Smoothness,Smoothness,Smoothness,1),intensity);
+    }
     public void PaintSmudge(float intensity, Color lastFrame1, Color lastFrame2, ref Color mask1, ref Color mask2)
     {
         mask1.r = Mathf.Lerp(mask1.r, lastFrame1.r, intensity);

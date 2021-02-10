@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28ec068381e275647bd680ace87b52b5, type: 3}
   m_Name: FacialPatten_MengLiang
   m_EditorClassIdentifier: 
-  PreviewImage: {fileID: 0}
+  PreviewImage: {fileID: 21300000, guid: 68c166b036e9f2549aa7bbd441ead867, type: 3}
   FacialPattenTexture: {fileID: 2800000, guid: cb825a1e2faa8444e821d131cb47937e, type: 3}
-  MaskMap: {fileID: 0}
+  MaskMap1: {fileID: 2800000, guid: c7c4f104e8f449d40bc917c1c963e7b8, type: 3}
+  MaskMap2: {fileID: 2800000, guid: 1b8100a3ddf991149aa9b69eaadc2538, type: 3}
   FileName: MengLiang
   FaceName: "\u5B5F\u826F"
   From: "\u7A46\u67EF\u5BE8"
@@ -24,12 +25,3 @@ MonoBehaviour:
   InfoFacialPatten: "\u5B5F\u826F\u8111\u95E8\u52FE\u5012\u6302\u7EA2\u846B\u82A6\uFF0C\u5728\u9F3B\u4E0B\u52FE\u52D2\u4E00\u4E2A\u76C6\u5F0F\u7EA2\u8272\u9F3B\u7A9D\u3002\u7528\u4EE5\u8C61\u5F81\u5176\u80FD\u591F\u4F7F\u7528\u706B\u846B\u82A6\u7684\u7279\u70B9\u3002"
   InfoCharacter: "\u5B5F\u826F\uFF0C\u5317\u5B8B\u540D\u5C06\uFF0C\u66FE\u6388\u671D\u6563\u90CE\u5B88\u6BBF\u4E2D\u4E1E\uFF0C\u81F4\u4ED5\u9A91\u90FD\u5C09\u3002\_[1]\_\_\u5B5F\u826F\u548C\u7126\u8D5E\u662F\u6768\u5BB6\u5C06\u4E2D\u4E24\u5458\u90FD\u4EE5\u52C7\u731B\u8457\u79F0\u7684\u5927\u5C06\uFF0C\u5E38\u5E38\u4E00\u8D77\u51FA\u573A\uFF0C\u88AB\u79F0\u4E3A\u201C\u7126\u4E0D\u79BB\u5B5F\uFF0C\u5B5F\u4E0D\u79BB\u7126\u201D\u3002"
   InfoStory: "\u5317\u5B8B\u5E74\u95F4\uFF0C\u5B8B\u8FBD\u5F00\u6218\uFF0C\u8FBD\u6446\u5929\u95E8\u9635\uFF0C\u6768\u516D\u90CE\u547D\u5B5F\u826F\u642C\u8BF7\u4E94\u90CE\u52A9\u7834\u5929\u95E8\u9635\uFF0C\u4E94\u90CE\u9700\u7A46\u67EF\u5BE8\u7684\u964D\u9F99\u6728\u4F5C\u65A7\u67C4\uFF0C\u5B5F\u826F\u3001\u7126\u8D5E\u53BB\u7D22\u53D6\uFF0C\u88AB\u5BE8\u4E3B\u4E4B\u5973\u7A46\u6842\u82F1\u6240\u8D25\u3002\u7126\u3001\u5B5F\u8BF7\u6768\u5B97\u4FDD\u52A9\u6218\uFF0C\u6768\u88AB\u7A46\u64D2\u53BB\uFF0C\u5B5F\u653E\u706B\u70E7\u5C71\uFF0C\u53C8\u88AB\u7A46\u7528\u5206\u706B\u6247\u5C06\u706B\u6247\u56DE\uFF0C\u7126\u3001\u5B5F\u5927\u8D25\u3002"
-  paintDifficulty: 0
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}

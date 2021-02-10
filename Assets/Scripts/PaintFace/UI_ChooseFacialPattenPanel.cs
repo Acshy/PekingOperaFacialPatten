@@ -41,7 +41,7 @@ public class UI_ChooseFacialPattenPanel : MonoBehaviour
         ShowFacialPattenGroup(FacialPattenList);
         ShowPanel(true);
     }
-    
+
 
     //显示/隐藏面板
     private bool isOnShow = true;
@@ -60,7 +60,15 @@ public class UI_ChooseFacialPattenPanel : MonoBehaviour
         isOnShow = show;
     }
 
-
+    public void ModifyRightPanel()
+    {
+        RightPanel.DOAnchorPosX(360, 0.2f).OnComplete(() =>
+        {
+            RightPanel.gameObject.SetActive(false);
+            RightPanel.gameObject.SetActive(true);
+            RightPanel.DOAnchorPosX(0, 0.2f);
+        });
+    }
     //设置脸谱信息
     public void SetFacialPattenInfo(FacialPattenScriptableObject facialPatten)
     {
@@ -73,6 +81,7 @@ public class UI_ChooseFacialPattenPanel : MonoBehaviour
         Right_From.text = facialPatten.From;
         Right_Name.text = facialPatten.FaceName;
         Right_TextArea.text = facialPatten.InfoStory;
+        ModifyRightPanel();
     }
 
 
@@ -92,27 +101,27 @@ public class UI_ChooseFacialPattenPanel : MonoBehaviour
         {
             case 0:
                 Right_TextArea.text = PaintLevelManager.Instance.CurrentFacialPatten.InfoFacialPatten;
-                Right_InfoStory.alpha=1f;
-                Right_InfoFacialPatten.alpha=0.2f;
-                Right_InfoPaintSkill.alpha=0.2f;
+                Right_InfoStory.alpha = 1f;
+                Right_InfoFacialPatten.alpha = 0.2f;
+                Right_InfoPaintSkill.alpha = 0.2f;
                 Right_InfoStory.enabled = false;
                 Right_InfoFacialPatten.enabled = true;
                 Right_InfoPaintSkill.enabled = true;
                 return;
             case 1:
                 Right_TextArea.text = PaintLevelManager.Instance.CurrentFacialPatten.InfoCharacter;
-                Right_InfoStory.alpha=0.2f;
-                Right_InfoFacialPatten.alpha=1f;
-                Right_InfoPaintSkill.alpha=0.2f;
+                Right_InfoStory.alpha = 0.2f;
+                Right_InfoFacialPatten.alpha = 1f;
+                Right_InfoPaintSkill.alpha = 0.2f;
                 Right_InfoStory.enabled = true;
                 Right_InfoFacialPatten.enabled = false;
                 Right_InfoPaintSkill.enabled = true;
                 return;
             case 2:
                 Right_TextArea.text = PaintLevelManager.Instance.CurrentFacialPatten.InfoStory;
-                Right_InfoStory.alpha=0.2f;
-                Right_InfoFacialPatten.alpha=0.2f;
-                Right_InfoPaintSkill.alpha=1f;
+                Right_InfoStory.alpha = 0.2f;
+                Right_InfoFacialPatten.alpha = 0.2f;
+                Right_InfoPaintSkill.alpha = 1f;
                 Right_InfoStory.enabled = true;
                 Right_InfoFacialPatten.enabled = true;
                 Right_InfoPaintSkill.enabled = false;

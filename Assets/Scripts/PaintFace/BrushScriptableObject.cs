@@ -11,7 +11,9 @@ public class BrushScriptableObject : ScriptableObject
     public Texture2D BrushMask => brushMask;
     [SerializeField] private Texture2D brushMask;
     public int Channel => channel;
-    [ShowIf("BrushType",BrushType.Color)][SerializeField] private int channel;
+    [ShowIf("BrushType", BrushType.Color)] [SerializeField] private int channel;
+    public float SurfaceSmoothness => surfaceSmoothness;
+    [HideIf("BrushType", BrushType.Smudge)] [SerializeField] private float surfaceSmoothness;
     public int Size => size;
     [SerializeField] private int size;
     public float Continuity => continuity;

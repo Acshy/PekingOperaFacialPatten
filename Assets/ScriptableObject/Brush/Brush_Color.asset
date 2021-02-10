@@ -17,5 +17,5 @@ MonoBehaviour:
   channel: 0
   size: 64
   continuity: 5
-  intensity: 1
+  intensity: 0.5
   inkAmount: 100

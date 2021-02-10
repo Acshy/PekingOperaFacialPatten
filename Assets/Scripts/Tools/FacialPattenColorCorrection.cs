@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
@@ -11,8 +11,8 @@ public class FacialPattenColorCorrection : EditorWindow
     [SerializeField]
     public Color[] Palette = new Color[9];
     public Texture2D TestTexture;
-    public string OutPutPath = "Assets/Textures/FacialPattenTextureCorrection/";
-    public string InputPath = "Assets/Textures/FacialPattenTexture/";
+    public string OutPutPath = "Assets/Textures/FacialPattenTextureMask/";
+    public string InputPath = "Assets/Textures/FacialPattenTextureCorrection/";
 
     List<Texture2D> importTextures;
     //利用构造函数来设置窗口名称
@@ -64,11 +64,16 @@ public class FacialPattenColorCorrection : EditorWindow
         //添加名为"Save Bug"按钮，用于调用SaveBug()函数
         if (GUILayout.Button("Go"))
         {
-            //LoadTextures();
-            //ProcessTextures();
-            Texture2D result = CorrectColorTexture(TestTexture);
-            result = DownSample(result, 256, 256);
-            result = BlurTexture(result, BlurItCount, BlurDistance);
+            // LoadTextures();
+            // ProcessTextures();
+             Texture2D mask1, mask2, result;
+            result = DownSample(TestTexture, 256, 256);
+            GenerateMask(TestTexture, out result, out mask1, out mask2);
+            result = BlurTexture(result, BlurItCount, BlurDistance);            
+            mask1 = BlurTexture(mask1, BlurItCount, BlurDistance);
+            mask2 = BlurTexture(mask2, BlurItCount, BlurDistance);
+            SaveRenderTextureToPNG(mask1, OutPutPath + TestTexture.name + "_mask1.png");
+            SaveRenderTextureToPNG(mask2, OutPutPath + TestTexture.name + "_mask2.png");
             SaveRenderTextureToPNG(result, OutPutPath + TestTexture.name + ".png");
         }
 
@@ -99,73 +104,109 @@ public class FacialPattenColorCorrection : EditorWindow
     void ProcessTextures()
     {
         foreach (var tex in importTextures)
-        {
-            Texture2D result = CorrectColorTexture(tex);
+        {            
+            Texture2D mask1, mask2, result;
+            result = DownSample(tex, 256, 256);
+            GenerateMask(tex, out result, out mask1, out mask2);
+            result = BlurTexture(result, BlurItCount, BlurDistance);            
+            mask1 = BlurTexture(mask1, BlurItCount, BlurDistance);
+            mask2 = BlurTexture(mask2, BlurItCount, BlurDistance);
+            SaveRenderTextureToPNG(mask1, OutPutPath + tex.name + "_mask1.png");
+            SaveRenderTextureToPNG(mask2, OutPutPath + tex.name + "_mask2.png");
             SaveRenderTextureToPNG(result, OutPutPath + tex.name + ".png");
         }
     }
 
-    public Texture2D CorrectColorTexture(Texture2D texture)
+    public void GenerateMask(Texture2D texture, out Texture2D result, out Texture2D mask1, out Texture2D mask2)
     {
-        Texture2D result = new Texture2D(texture.width, texture.height, TextureFormat.RGBA32, true, true);
-        for (int x = 0; x < result.width; x++)
+        result = new Texture2D(texture.width, texture.height, TextureFormat.RGBA32, true, true);
+        mask1 = new Texture2D(texture.width, texture.height, TextureFormat.RGBA32, true, true);
+        mask2 = new Texture2D(texture.width, texture.height, TextureFormat.RGBA32, true, true);
+        for (int x = 0; x < texture.width; x++)
         {
-            for (int y = 0; y < result.height; y++)
+            for (int y = 0; y < texture.height; y++)
             {
                 Color color = texture.GetPixel(x, y);
-                result.SetPixel(x, y, CorretColor(color));
+                Color mask1Color, mask2Color, resultColor;
+                int colorChannelId = DecideColorChannel(color, out resultColor);
+                SetMaskPixel(colorChannelId, out mask1Color, out mask2Color);
+                mask1.SetPixel(x, y, mask1Color);
+                mask2.SetPixel(x, y, mask2Color);
+                result.SetPixel(x, y, resultColor);
             }
         }
         result.Apply();
-        return result;
-
+        mask1.Apply();
+        mask2.Apply();
     }
 
-    Color CorretColor(Color orgin)
+    void SetMaskPixel(int id, out Color mask1Color, out Color mask2Color)
     {
+        mask1Color = new Color(0, 0, 0, 0);
+        mask2Color = new Color(0, 0, 0, 0);
+        if (id >= 0)
+        {
+            if (id < 4)
+            {
+                mask1Color[id] = 1;
+            }
+            else
+            {
+                mask2Color[id - 4] = 1;
+            }
+        }
+    }
+
+    int DecideColorChannel(Color orgin, out Color resultColor)
+    {
+        resultColor = orgin;
         if (orgin.a < 0.1f)
-            return orgin;
-        Color result;
-        int targetColorId = 0;
+        {
+            return -1;
+        }
+        int resultID = -1;
         float minColorDis = 999;
         float H, S, V;
         Color.RGBToHSV(orgin, out H, out S, out V);
-        
-        if (Vector3.SqrMagnitude(new Vector3(orgin.r - Palette[8].r, orgin.g - Palette[8].g, orgin.b - Palette[8].b)) < 0.02f)//判断肉色
+
+        if (Vector3.SqrMagnitude(new Vector3(orgin.r - Palette[8].r, orgin.g - Palette[8].g, orgin.b - Palette[8].b)) < 0.025f && S>0.125f)//判断肉色
         {
-            result = Palette[8];
-            result.a = 0;
+            resultColor = Palette[8];
+            resultColor.a = 0;
         }
-        else if (V < 0.2f)//判断黑色
+        else if (V < 0.2f || (S<0.3f&&V<0.4f))//判断黑色
         {
-            result = Color.Lerp(orgin, Palette[0], ColorCorrection);
+            resultID = 0;
+            resultColor = Color.Lerp(orgin, Palette[0], ColorCorrection);
         }
         else if (V > 0.9f && S < 0.1f)//判断白色
         {
-            result = Color.Lerp(orgin, Palette[1], ColorCorrection);
+            resultID = 1;
+            resultColor = Color.Lerp(orgin, Palette[1], ColorCorrection);
         }
-        else if (S < 0.3f)//判断灰色
+        else if (S < 0.25f)//判断灰色
         {
-            result = Color.Lerp(orgin, Palette[2], ColorCorrection);
+            resultID = 2;
+            resultColor = Color.Lerp(orgin, Palette[2], ColorCorrection);
         }
         else
         {
             for (int i = 3; i < 8; i++)
             {
-                //float colorDis = Vector3.SqrMagnitude(new Vector3(orgin.r - Palette[i].r, orgin.g - Palette[i].g, orgin.b - Palette[i].b));
-                float paletteH, paletteS, paletteV;
-                Color.RGBToHSV(Palette[i], out paletteH, out paletteS, out paletteV);
-                float colorDis = (paletteH - H) * (paletteH - H);
+                float colorDis = Vector3.SqrMagnitude(new Vector3(orgin.r - Palette[i].r, orgin.g - Palette[i].g, orgin.b - Palette[i].b));
+                //float paletteH, paletteS, paletteV;
+                //Color.RGBToHSV(Palette[i], out paletteH, out paletteS, out paletteV);
+                //float colorDis = (paletteH - H) * (paletteH - H);
                 if (colorDis < minColorDis)
                 {
                     minColorDis = colorDis;
-                    targetColorId = i;
+                    resultID = i;
                 }
             }
-            result = Color.Lerp(orgin, Palette[targetColorId], ColorCorrection);
+            resultColor = Color.Lerp(orgin, Palette[resultID], ColorCorrection);
         }
 
-        return result;
+        return resultID;
     }
 
     public Texture2D DownSample(Texture2D texture, int width, int height)
@@ -216,7 +257,7 @@ public class FacialPattenColorCorrection : EditorWindow
                 color += result.GetPixel(x, (int)Mathf.Max(y - Random.Range(0, 1.0f) * BlurDistance, 0)) * 0.2442f;
                 color += result.GetPixel(x, y) * 0.4026f;
                 color += result.GetPixel(x, (int)Mathf.Min(y + Random.Range(0, 1.0f) * BlurDistance, texture.height - 1)) * 0.2442f;
-                color += result.GetPixel(x, (int)Mathf.Min(y + Random.Range(1, 2.0f) * BlurDistance, texture.height - 2)) * 0.0545f;
+                color += result.GetPixel(x, (int)Mathf.Min(y + Random.Range(1, 2.0f) * BlurDistance, texture.height - 2)) * 0.0545f;         
                 result.SetPixel(x, y, color);
             }
         }

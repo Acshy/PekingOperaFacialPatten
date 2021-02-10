@@ -39,7 +39,6 @@ public class InteractManager : MonoBehaviour
             {
                 Vector2 hitUV = hitInfo.textureCoord2;
 
-                Debug.LogError(hitUV.x + "," + hitUV.y);
                 PointType pointType = PointType.MiddlePoint;
                 if (Input.GetMouseButtonDown(0))
                 {

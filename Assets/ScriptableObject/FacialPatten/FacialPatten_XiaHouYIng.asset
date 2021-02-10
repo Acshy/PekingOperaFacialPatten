@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28ec068381e275647bd680ace87b52b5, type: 3}
-  m_Name: FacialPatten_XiaHouYIng
+  m_Name: FacialPatten_XiaHouYing
   m_EditorClassIdentifier: 
-  PreviewImage: {fileID: 0}
-  FacialPattenTexture: {fileID: 0}
-  MaskMap: {fileID: 0}
-  FileName: XiaHouYIng
+  PreviewImage: {fileID: 21300000, guid: ea54c244398f2b84a8761722553731fb, type: 3}
+  FacialPattenTexture: {fileID: 2800000, guid: f1bcce633e38afd4384e0d6b0a2a798c, type: 3}
+  MaskMap1: {fileID: 2800000, guid: 0dce62a4d7549264dae45998fd25bbfc, type: 3}
+  MaskMap2: {fileID: 2800000, guid: 3b657a072a4733b408b85c276f3038c1, type: 3}
+  FileName: XiaHouYing
   FaceName: "\u590F\u4FAF\u5A74"
   From: "\u8427\u4F55\u6708\u4E0B\u8FFD\u97E9\u4FE1"
   HangDang: 4
@@ -24,12 +25,3 @@ MonoBehaviour:
   InfoFacialPatten: "\u590F\u4FAF\u5A74\u662F\u4E11\u89D2\u8138\u3002\u4E11\u89D2\u753B\u8138\u7684\u7279\u70B9\u662F\u5728\u9F3B\u6881\u4E2D\u5FC3\u62B9\u4E00\u4E2A\u767D\u8272\u8C46\u8150\u5757\uFF0C\u7528\u9EBB\u82B1\u624B\u6CD5\u8868\u73B0\u4EBA\u7269\u559C\u5267\u7279\u5F81\u3002"
   InfoCharacter: "\u590F\u4FAF\u5A74\uFF0C\u897F\u6C49\u5F00\u56FD\u529F\u81E3\u3002\u8DDF\u968F\u5218\u90A6\u8D77\u5175\u53CD\u79E6\uFF0C\u5C61\u5EFA\u6218\u529F\u3002\u695A\u6C49\u6218\u4E89\u4E2D\uFF0C\u4E3E\u8350\u97E9\u4FE1\u4E3A\u5C06\uFF0C\u4FDD\u5168\u6C49\u60E0\u5E1D\u548C\u9C81\u5143\u516C\u4E3B\u3002\u5218\u90A6\u79F0\u5E1D\u540E\uFF0C\u518C\u5C01\u6C5D\u9634\u4FAF\uFF0C\u534F\u52A9\u8BDB\u9664\u81E7\u837C\u3001\u97E9\u738B\u4FE1\u3001\u9648\u8C68\u3001\u82F1\u5E03\u7B49\u5F02\u59D3\u738B\u4FAF\u3002"
   InfoStory: "\u79E6\u671D\u672B\u5E74\uFF0C\u5218\u90A6\u8D77\u4E49\u706D\u79E6\uFF0C\u8427\u4F55\u5668\u91CD\u97E9\u4FE1\u4E4B\u624D\uFF0C\u4E09\u8350\u4E8E\u5218\u90A6\uFF0C\u5218\u90A6\u4E0D\u80AF\u91CD\u7528\u3002\u97E9\u4FE1\u6124\u800C\u51FA\u8D70\uFF0C\u8427\u4F55\u95FB\u542C\u97E9\u4FE1\u79BB\u53BB\uFF0C\u6DF1\u6050\u5931\u53BB\u4EBA\u624D\uFF0C\u4E0D\u987E\u9053\u8DEF\u8270\u96BE\uFF0C\u6234\u6708\u8FFD\u8D76\uFF0C\u529D\u97E9\u4FE1\u56DE\u8F6C\uFF0C\u518D\u5411\u5218\u90A6\u63A8\u8350\uFF0C\u97E9\u4FE1\u624D\u5F97\u767B\u53F0\u62DC\u5E05\u7684\u6545\u4E8B\u3002"
-  paintDifficulty: 0
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}

@@ -12,24 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28ec068381e275647bd680ace87b52b5, type: 3}
   m_Name: FacialPatten_WangYuan
   m_EditorClassIdentifier: 
-  PreviewImage: {fileID: 0}
+  PreviewImage: {fileID: 21300000, guid: c7fe0bed3d9c0734392c94ca05e66aef, type: 3}
   FacialPattenTexture: {fileID: 2800000, guid: d6a4f4aa1cc04ed47af38e4a3ec37bc4, type: 3}
-  MaskMap: {fileID: 0}
+  MaskMap1: {fileID: 2800000, guid: aefdac146308fb140bdb3e8357016c38, type: 3}
+  MaskMap2: {fileID: 2800000, guid: e1981168eeda2dc428acf7d2e5ffc7ce, type: 3}
   FileName: WangYuan
   FaceName: "\u738B\u5143"
   From: "\u53D6\u6D1B\u9633"
-  HangDang: 4
+  HangDang: 3
   MainColor: 4
   PuShi: 10
   InfoFacialPatten: "\u738B\u5143\u4E3A\u7EA2\u8272\u5143\u5B9D\u8138\u3002\u5143\u5B9D\u8138\u662F\u6307\u8111\u95E8\u548C\u8138\u819B\u7684\u8272\u5F69\u4E0D\u4E00\uFF0C\u5176\u5F62\u5982\u5143\u5B9D\uFF0C\u6545\u53EB\u201C\u5143\u5B9D\u8138\u201D\u3002"
   InfoCharacter: "\u738B\u5143\uFF0C\u300A\u53D6\u6D1B\u9633\u300B\u5267\u4E2D\u4EBA\u7269,\u738B\u5143\u662F\u82CF\u732E\u7684\u90E8\u5C06,\u6C49\u519B\u653B\u7834\u6D1B\u9633\u540E,\u88AB\u9A6C\u6B66\u6240\u65A9\u3002"
   InfoStory: "\u4E1C\u6C49\uFF0C\u5218\u79C0\u653B\u6253\u6D1B\u9633\uFF0C\u6D1B\u9633\u5B88\u5C06\u82CF\u732E\u57CE\u9632\u751A\u4E25\uFF0C\u65E0\u9699\u53EF\u4E58\u3002\u5143\u5E05\u9093\u79B9\u5229\u7528\u9A6C\u6B66\u4E0E\u5C91\u5F6D\u4E0D\u548C\uFF0C\u5047\u610F\u91CD\u7528\u5C91\u5F6D\uFF0C\u9A6C\u6B66\u56E0\u4E0D\u670D\u55A7\u95F9\uFF0C\u9093\u79B9\u6545\u8D23\u9A6C\u6B66\u56DB\u5341\u519B\u68CD\uFF0C\u9A71\u4E4B\u56DE\u8FD4\u592A\u884C\u5C71\u3002\u9014\u4E2D\u9A6C\u6B66\u601D\u5F97\u82E6\u8089\u8BA1\uFF0C\u8BC8\u964D\u82CF\u732E\uFF0C\u6253\u7834\u6D1B\u9633\u3002"
-  paintDifficulty: 0
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}

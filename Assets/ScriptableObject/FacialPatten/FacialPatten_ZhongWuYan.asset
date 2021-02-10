@@ -12,24 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28ec068381e275647bd680ace87b52b5, type: 3}
   m_Name: FacialPatten_ZhongWuYan
   m_EditorClassIdentifier: 
-  PreviewImage: {fileID: 0}
+  PreviewImage: {fileID: 21300000, guid: c4ac8cec8ee888d40994837eed80f395, type: 3}
   FacialPattenTexture: {fileID: 2800000, guid: ea735df9559136b4ab91ba1458722223, type: 3}
-  MaskMap: {fileID: 0}
+  MaskMap1: {fileID: 2800000, guid: 8b8348484c5a9694392820b6907a97fc, type: 3}
+  MaskMap2: {fileID: 2800000, guid: bc2f35f0a4d127842885f247d3b27bef, type: 3}
   FileName: ZhongWuYan
   FaceName: "\u949F\u65E0\u8273"
   From: "\u6E58\u6C5F\u4F1A"
   HangDang: 2
-  MainColor: 4
+  MainColor: 5
   PuShi: 2
   InfoFacialPatten: "\u949F\u65E0\u8273\u867D\u4E3A\u65E6\u89D2\uFF0C\u4F46\u662F\u7531\u4E8E\u8BB0\u8F7D\u5176\u5BB9\u8C8C\u4E11\u964B\uFF0C\u53C8\u662F\u5DFE\u5E3C\u82F1\u96C4\uFF0C\u6545\u753B\u84DD\u8272\u8138\u8C31\u3002\u84DD\u8272\u8868\u73B0\u5176\u9A81\u52C7\u5584\u6218\uFF0C\u989D\u5934\u83B2\u82B1\u8868\u73B0\u5176\u5973\u6027\u7279\u5F81\u3002"
   InfoCharacter: "\u949F\u65E0\u8273\uFF0C\u9F50\u5BA3\u738B\u4E4B\u59BB \uFF0C\u4E2D\u56FD\u53E4\u4EE3\u56DB\u5927\u4E11\u5973\u4E4B\u4E00\u3002\u56E0\u5176\u4E3A\u65E0\u76D0\u4EBA\uFF0C\u6545\u53F2\u79F0\u65E0\u76D0\u5973\u6216\u65E0\u76D0\uFF0C\u53C8\u56E0\u4F20\u8BF4\u5176\u590D\u59D3\u953A\u79BB\uFF0C\u540D\u6625\uFF0C\u6545\u53C8\u79F0\u953A\u79BB\u6625\u3001\u953A\u79BB\u65E0\u76D0\uFF0C\u540E\u7B80\u79F0\u953A\u65E0\u76D0\uFF0C\u5728\u620F\u66F2\u4E2D\u5219\u88AB\u5199\u4F5C\u953A\u65E0\u8273\u3002"
   InfoStory: "\u6218\u56FD\u65F6\uFF0C\u9B4F\u7075\u516C\u6B32\u52A0\u5BB3\u9F50\u5BA3\u738B\uFF0C\u56E0\u8BBE\u6E58\u6C5F\u5927\u4F1A\u3002\u5434\u8D77\u732E\u8BA1\uFF0C\u4E0E\u9F50\u738B\u8F83\u5C04\u3002\u9F50\u540E\u949F\u65E0\u76D0\u968F\u9F50\u5BA3\u738B\u8D74\u4F1A\uFF0C\u5C04\u6B7B\u9B4F\u7075\u516C\uFF0C\u6218\u8D25\u5434\u8D77\uFF0C\u4FDD\u9F50\u5BA3\u738B\u51FA\u9669\u3002"
-  paintDifficulty: 0
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}

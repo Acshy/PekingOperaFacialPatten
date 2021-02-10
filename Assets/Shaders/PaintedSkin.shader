@@ -4,11 +4,14 @@
     {
         [MainTexture][NoScaleOffset]_BaseMap ("Base Texture", 2D) = "white" { }
         [MainColor]_BaseColor ("Base Color", Color) = (1, 1, 1, 1)
-        [NoScaleOffset]_FacialPattenTex ("Facial Patten", 2D) ="black" { }
+        [NoScaleOffset]_FacialPattenTex ("Facial Patten", 2D) = "black" { }
+        [NoScaleOffset]_FacialPattenMask ("Facial Patten Mask", 2D) = "white" { }
+        _FacialPattenIntensity ("FacialPattenIntensity", Range(0.0, 1.0)) = 0.75
         
         [NoScaleOffset] _SpecularMask ("Specular Mask", 2D) = "white" { }
         _SpecularColor ("SpecularColor", Color) = (1, 1, 1, 1)
         _SpcularGloss ("SpcularGloss", float) = 10
+        [HideInInspector][NoScaleOffset] _SpecularMask2 ("_Specular Mask2", 2D) = "black" { }
         
         [NoScaleOffset][Normal] _BumpMap ("Normal Map", 2D) = "bump" { }
         _BumpScale ("BumpScale", Range(-1.0, 1.0)) = 1
@@ -27,8 +30,8 @@
         
         //[NoScaleOffset]_PaintArea1 ("_PaintArea1", 2D) = "black" { }
         //[NoScaleOffset]_PaintArea2 ("_PaintArea2", 2D) = "black" { }
-        [NoScaleOffset]_ControlMask1 ("_ControlMask1", 2D) = "black" { }
-        [NoScaleOffset]_ControlMask2 ("_ControlMask2", 2D) = "black" { }
+        [HideInInspector][NoScaleOffset]_ControlMask1 ("_ControlMask1", 2D) = "black" { }
+        [HideInInspector][NoScaleOffset]_ControlMask2 ("_ControlMask2", 2D) = "black" { }
     }
     SubShader
     {
@@ -40,8 +43,10 @@
         CBUFFER_START(UnityPerMaterial)
         float4 _BaseMap_ST;
         float4 _BaseColor;
+        float _FacialPattenIntensity;
         float4 _SpecularColor;
         float _SpcularGloss;
+        float _Spcular2Scale;
         float _BumpScale;
         float _SSSScale;
         float _Cutoff;
@@ -84,9 +89,11 @@
                 float3 bitangentWS: TEXCOORD5;    // xyz: bitangent, w: viewDir.z
             };
             
-            TEXTURE2D(_BaseMap);        SAMPLER(sampler_BaseMap);            
-            TEXTURE2D(_FacialPattenTex);        SAMPLER(sampler_FacialPattenTex);            
+            TEXTURE2D(_BaseMap);        SAMPLER(sampler_BaseMap);
+            TEXTURE2D(_FacialPattenTex);        SAMPLER(sampler_FacialPattenTex);
+            TEXTURE2D(_FacialPattenMask);        SAMPLER(sampler_FacialPattenMask);
             TEXTURE2D(_SpecularMask);   SAMPLER(sampler_SpecularMask);
+            TEXTURE2D(_SpecularMask2);   SAMPLER(sampler_SpecularMask2);
             TEXTURE2D(_BumpMap);        SAMPLER(sampler_BumpMap);
             TEXTURE2D(_CurveMap);       SAMPLER(sampler_CurveMap);
             TEXTURE2D(_SSSRampMap);     SAMPLER(sampler_SSSRampMap);
@@ -110,59 +117,62 @@
                 OUT.tangentWS = normalInputs.tangentWS;
                 OUT.bitangentWS = normalInputs.bitangentWS;
                 OUT.uv.xy = TRANSFORM_TEX(IN.uv, _BaseMap);
-                OUT.uv.zw = TRANSFORM_TEX(IN.uv2, _BaseMap);                
+                OUT.uv.zw = TRANSFORM_TEX(IN.uv2, _BaseMap);
                 return OUT;
             }
             
-            /*
-            float adjustPaint(float maskValue, float paintAreaValue)
+            
+            float adjustPaint(float maskValue)
             {
-                return smoothstep(_Correction, 1, maskValue + _Correction * paintAreaValue);
+                return smoothstep(0.5f, 1, maskValue * 3);
             }
-            */
+            
             
             float4 frag(Varings IN): SV_Target
             {
                 //Sample Texture
                 half4 baseMap = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv.xy);
-                half4 facialPatten =SAMPLE_TEXTURE2D(_FacialPattenTex, sampler_BaseMap, IN.uv.zw);
-                float specularMask = SAMPLE_TEXTURE2D(_SpecularMask, sampler_SpecularMask, IN.uv.xy).r;
-                float curve = SAMPLE_TEXTURE2D(_CurveMap, sampler_CurveMap, IN.uv.xy).r;
+                half4 facialPatten = SAMPLE_TEXTURE2D(_FacialPattenTex, sampler_BaseMap, IN.uv.zw);
+                half4 facialPattenMask = SAMPLE_TEXTURE2D(_FacialPattenMask, sampler_FacialPattenMask, IN.uv.zw);
+                float4 specularMaskColor = SAMPLE_TEXTURE2D(_SpecularMask, sampler_SpecularMask, IN.uv.xy);
+                float4 specularMask2Color = SAMPLE_TEXTURE2D(_SpecularMask2, sampler_SpecularMask, IN.uv.zw);
+                float4 curve = SAMPLE_TEXTURE2D(_CurveMap, sampler_CurveMap, IN.uv.xy);                
                 float3 normalTS = UnpackNormalScale(SAMPLE_TEXTURE2D(_BumpMap, sampler_BumpMap, IN.uv.xy), _BumpScale);
                 float3 normalWS = normalize(TransformTangentToWorld(normalTS, half3x3(IN.tangentWS, IN.bitangentWS, IN.normalWS)));
-                float4 mask1 = SAMPLE_TEXTURE2D(_ControlMask1, sampler_ControlMask1, IN.uv.zw);
-                float4 mask2 = SAMPLE_TEXTURE2D(_ControlMask2, sampler_ControlMask2, IN.uv.zw);
+                half4 mask1 = SAMPLE_TEXTURE2D(_ControlMask1, sampler_ControlMask1, IN.uv.zw);
+                half4 mask2 = SAMPLE_TEXTURE2D(_ControlMask2, sampler_ControlMask2, IN.uv.zw);
                 //float4 paintArea1 = SAMPLE_TEXTURE2D(_PaintArea1, sampler_PaintArea1, IN.uv);
                 //float4 paintArea2 = SAMPLE_TEXTURE2D(_PaintArea2, sampler_PaintArea2, IN.uv);
                 
-                half3 baseColor = lerp(baseMap.rgb, facialPatten.rgb, facialPatten.a);
+                half3 baseColor = lerp(baseMap.rgb, facialPatten.rgb, facialPatten.a * _FacialPattenIntensity * (1-facialPattenMask.a));
                 
                 //绘制区域校正
-                /*
-                mask1.r = adjustPaint(mask1.r, paintArea1.r);
-                mask1.g = adjustPaint(mask1.g, paintArea1.g);
-                mask1.b = adjustPaint(mask1.b, paintArea1.b);
-                mask1.a = adjustPaint(mask1.a, paintArea1.a);
-                mask2.r = adjustPaint(mask2.r, paintArea1.r);
-                mask2.g = adjustPaint(mask2.g, paintArea2.g);
-                mask2.b = adjustPaint(mask2.b, paintArea2.b);
-                mask2.a = adjustPaint(mask2.a, paintArea2.a);
-                */
                 
-                float alpha = mask1.r + mask1.g + mask1.b + mask1.a + mask2.r + mask2.g + mask2.b;
+                // mask1.r = adjustPaint(mask1.r);
+                // mask1.g = adjustPaint(mask1.g);
+                // mask1.b = adjustPaint(mask1.b);
+                // mask1.a = adjustPaint(mask1.a);
+                // mask2.r = adjustPaint(mask2.r);
+                // mask2.g = adjustPaint(mask2.g);
+                // mask2.b = adjustPaint(mask2.b);
+                // mask2.a = adjustPaint(mask2.a);
+                
+                
+                float alpha = mask1.r + mask1.g + mask1.b + mask1.a + mask2.r + mask2.g + mask2.b + mask2.a;
                 
                 
                 //计算绘制颜色
                 half4 paintColor = mul(_MaskColor1, mask1) + mul(_MaskColor2, half4(mask2));
-                baseColor = lerp(baseColor, paintColor.rgb, alpha);
+                baseColor = lerp(baseColor, paintColor.rgb, alpha*(1-facialPattenMask.a));
                 
                 //绘制油彩部分，高光更强
-                specularMask = saturate(specularMask + (alpha * (paintColor.a - 0.5) * 0.5f) + mask2.a);
+                //TODO：找到更合适的高光表达
+                float specularMask = lerp(specularMaskColor.r, specularMask2Color.r, specularMask2Color.a*(1-facialPattenMask.a));
                 
                 //计算主光
                 Light light = GetMainLight();
                 half NdotL = dot(normalize(normalWS), light.direction);
-                half3 sss = SAMPLE_TEXTURE2D(_SSSRampMap, sampler_SSSRampMap, float2(0.5 * NdotL + 0.5, saturate(curve * _SSSScale)));
+                half3 sss = SAMPLE_TEXTURE2D(_SSSRampMap, sampler_SSSRampMap, float2(0.5 * NdotL + 0.5, saturate(curve.r * _SSSScale)));
                 half3 diffuseColor = light.color * sss;
                 half3 specularColor = LightingSpecular(light.color, light.direction, normalize(normalWS), normalize(IN.viewDirWS), _SpecularColor, _SpcularGloss);
                 //计算附加光照
@@ -172,7 +182,7 @@
                     Light light = GetAdditionalLight(lightIndex, IN.positionWS);
                     half3 attenuation = light.distanceAttenuation * light.shadowAttenuation;
                     NdotL = dot(normalize(normalWS), light.direction);
-                    sss = SAMPLE_TEXTURE2D(_SSSRampMap, sampler_SSSRampMap, float2(0.5 * NdotL + 0.5, saturate(curve * _SSSScale)));
+                    sss = SAMPLE_TEXTURE2D(_SSSRampMap, sampler_SSSRampMap, float2(0.5 * NdotL + 0.5, saturate(curve.r * _SSSScale)));
                     diffuseColor += light.color * attenuation * sss;
                     specularColor += LightingSpecular(attenuation * light.color, light.direction, normalize(normalWS), normalize(IN.viewDirWS), _SpecularColor, _SpcularGloss);
                 }
