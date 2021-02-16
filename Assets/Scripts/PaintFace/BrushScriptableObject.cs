@@ -10,16 +10,14 @@ public class BrushScriptableObject : ScriptableObject
     [SerializeField] private BrushType brushType;
     public Texture2D BrushMask => brushMask;
     [SerializeField] private Texture2D brushMask;
-    public int Channel => channel;
-    [ShowIf("BrushType", BrushType.Color)] [SerializeField] private int channel;
-    public float SurfaceSmoothness => surfaceSmoothness;
-    [HideIf("BrushType", BrushType.Smudge)] [SerializeField] private float surfaceSmoothness;
+    public float Smoothness => smoothness;
+    [HideIf("BrushType", BrushType.Smudge)] [SerializeField] [Range(0, 1)] private float smoothness;
     public int Size => size;
     [SerializeField] private int size;
     public float Continuity => continuity;
     [SerializeField] [Range(0, 10)] private float continuity;
     public float Intensity => intensity;
-    [SerializeField] private float intensity;
+    [SerializeField] [Range(0, 1)]private float intensity;
     public float InkAmount => inkAmount;
     [SerializeField] private float inkAmount;
 }

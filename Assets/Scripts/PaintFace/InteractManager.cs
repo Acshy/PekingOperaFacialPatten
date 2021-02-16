@@ -11,9 +11,6 @@ public class InteractManager : MonoBehaviour
         Instance = this;
     }
 
-    [InlineEditor]
-    public BrushScriptableObject TestBrush;
-    Brush currentBrush;
     public Transform HeadCenter;
     Vector2 lasHitUv;
 
@@ -26,7 +23,6 @@ public class InteractManager : MonoBehaviour
     {
         cameraTrans = Camera.main.transform;
         cameraDistance = Vector3.Distance(cameraTrans.position, HeadCenter.transform.position);
-        currentBrush = new Brush(TestBrush);
     }
 
     void Update()
@@ -44,6 +40,7 @@ public class InteractManager : MonoBehaviour
                 {
                     lasHitUv = hitUV;
                     pointType = PointType.StartPoint;
+                    PaintLevelManager.Instance.CurrentBrush.ResetInk();
                 }
 
                 if (Input.GetMouseButtonUp(0))
@@ -53,9 +50,11 @@ public class InteractManager : MonoBehaviour
 
                 if (hitInfo.collider.gameObject == FaceTextureManager.Instance.FaceRenderer.gameObject)
                 {
-                    currentBrush = new Brush(TestBrush);
-                    FaceTextureManager.Instance.Paint(hitUV, lasHitUv, currentBrush, pointType);
-                    lasHitUv = hitUV;
+                    if (PaintLevelManager.Instance.CurrentBrush != null)
+                    {
+                        FaceTextureManager.Instance.Paint(hitUV, lasHitUv, PaintLevelManager.Instance.CurrentBrush, pointType);
+                        lasHitUv = hitUV;
+                    }
                 }
             }
         }

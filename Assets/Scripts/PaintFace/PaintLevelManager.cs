@@ -13,19 +13,28 @@ public class PaintLevelManager : MonoBehaviour
     }
 
     [ReadOnly] public PaintLevelGameState PaintLevelGameState;
-    public UI_ChooseFacialPattenPanel UI_ChooseFacialPattenPanel;
-    public Renderer FaceRenderer;
 
-    //当前绘制的脸谱
+    //绘制的脸谱
     public FacialPattenScriptableObject CurrentFacialPatten => currentFacialPatten;
     private FacialPattenScriptableObject currentFacialPatten;
     public void SetCurrentFace(FacialPattenScriptableObject facialPatten)
     {
         currentFacialPatten = facialPatten;
-        UI_ChooseFacialPattenPanel.SetFacialPattenInfo(facialPatten);
         SetPalette(facialPatten.MainColor);
         SetFacialPattenTexture(facialPatten.FacialPattenTexture);
-        //TODO:设置角色模型的脸谱贴图
+    }
+
+    //辅助绘制参数
+
+    public float Correction = 0.25f;
+
+
+
+    //当前笔刷
+    public Brush CurrentBrush;
+    public void SetCurrentBrush(BrushScriptableObject brushScriptable, int colorChannel)
+    {
+        CurrentBrush = new Brush(brushScriptable, colorChannel);
     }
 
     //当前调色板
@@ -48,13 +57,23 @@ public class PaintLevelManager : MonoBehaviour
         channelColorsMat = new Matrix4x4(CurrentPalette[4], CurrentPalette[5], CurrentPalette[6], CurrentPalette[7]);
         Shader.SetGlobalMatrix("_MaskColor2", channelColorsMat);
     }
-    
-    public void SetFacialPattenTexture(Texture texture)
+
+    public void SetFacialPattenTexture(Texture2D texture)
     {
-        FaceRenderer.material.SetTexture("_FacialPattenTex",texture);
-        FaceRenderer.material.SetFloat("_FacialPattenIntensity",0);
+
+
+        Renderer FaceRenderer = FaceTextureManager.Instance.FaceRenderer;
+        FaceRenderer.material.SetTexture("_FacialPattenTex", texture);
+        FaceRenderer.material.SetFloat("_FacialPattenIntensity", 0);
         DOTween.Kill(FaceRenderer.material);
-        FaceRenderer.material.DOFloat(0.75f,"_FacialPattenIntensity",0.6f);
+        FaceRenderer.material.DOFloat(0.75f, "_FacialPattenIntensity", 0.6f);
+    }
+    public void InitFaceTextureManager()
+    {
+        Renderer FaceRenderer = FaceTextureManager.Instance.FaceRenderer;     
+        DOTween.Kill(FaceRenderer.material);
+        FaceRenderer.material.DOFloat(0, "_FacialPattenIntensity",0.6f);
+        FaceTextureManager.Instance.Initialized();
     }
 
     private void OnValidate()

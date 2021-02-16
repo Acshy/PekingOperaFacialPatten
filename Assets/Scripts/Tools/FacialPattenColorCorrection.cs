@@ -66,10 +66,10 @@ public class FacialPattenColorCorrection : EditorWindow
         {
             // LoadTextures();
             // ProcessTextures();
-             Texture2D mask1, mask2, result;
+            Texture2D mask1, mask2, result;
             result = DownSample(TestTexture, 256, 256);
             GenerateMask(TestTexture, out result, out mask1, out mask2);
-            result = BlurTexture(result, BlurItCount, BlurDistance);            
+            result = BlurTexture(result, BlurItCount, BlurDistance);
             mask1 = BlurTexture(mask1, BlurItCount, BlurDistance);
             mask2 = BlurTexture(mask2, BlurItCount, BlurDistance);
             SaveRenderTextureToPNG(mask1, OutPutPath + TestTexture.name + "_mask1.png");
@@ -104,11 +104,11 @@ public class FacialPattenColorCorrection : EditorWindow
     void ProcessTextures()
     {
         foreach (var tex in importTextures)
-        {            
+        {
             Texture2D mask1, mask2, result;
             result = DownSample(tex, 256, 256);
             GenerateMask(tex, out result, out mask1, out mask2);
-            result = BlurTexture(result, BlurItCount, BlurDistance);            
+            result = BlurTexture(result, BlurItCount, BlurDistance);
             mask1 = BlurTexture(mask1, BlurItCount, BlurDistance);
             mask2 = BlurTexture(mask2, BlurItCount, BlurDistance);
             SaveRenderTextureToPNG(mask1, OutPutPath + tex.name + "_mask1.png");
@@ -169,12 +169,12 @@ public class FacialPattenColorCorrection : EditorWindow
         float H, S, V;
         Color.RGBToHSV(orgin, out H, out S, out V);
 
-        if (Vector3.SqrMagnitude(new Vector3(orgin.r - Palette[8].r, orgin.g - Palette[8].g, orgin.b - Palette[8].b)) < 0.025f && S>0.125f)//判断肉色
+        if (Vector3.SqrMagnitude(new Vector3(orgin.r - Palette[8].r, orgin.g - Palette[8].g, orgin.b - Palette[8].b)) < 0.025f && S > 0.125f)//判断肉色
         {
             resultColor = Palette[8];
             resultColor.a = 0;
         }
-        else if (V < 0.2f || (S<0.3f&&V<0.4f))//判断黑色
+        else if (V < 0.2f || (S < 0.3f && V < 0.4f))//判断黑色
         {
             resultID = 0;
             resultColor = Color.Lerp(orgin, Palette[0], ColorCorrection);
@@ -257,7 +257,7 @@ public class FacialPattenColorCorrection : EditorWindow
                 color += result.GetPixel(x, (int)Mathf.Max(y - Random.Range(0, 1.0f) * BlurDistance, 0)) * 0.2442f;
                 color += result.GetPixel(x, y) * 0.4026f;
                 color += result.GetPixel(x, (int)Mathf.Min(y + Random.Range(0, 1.0f) * BlurDistance, texture.height - 1)) * 0.2442f;
-                color += result.GetPixel(x, (int)Mathf.Min(y + Random.Range(1, 2.0f) * BlurDistance, texture.height - 2)) * 0.0545f;         
+                color += result.GetPixel(x, (int)Mathf.Min(y + Random.Range(1, 2.0f) * BlurDistance, texture.height - 2)) * 0.0545f;
                 result.SetPixel(x, y, color);
             }
         }
@@ -274,3 +274,5 @@ public class FacialPattenColorCorrection : EditorWindow
 
     }
 }
+
+

@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Brush : MonoBehaviour
+[System.Serializable]
+public class Brush
 {
     public Texture2D BrushMask;
     public int Channel;
-    public float SurfaceSmoothness;
+    public float Smoothness;
     public int Size;
     public float Continuity;
     public float Intensity;
@@ -34,16 +35,16 @@ public class Brush : MonoBehaviour
         
         return ink/InkAmount;
     }
-    public Brush(BrushScriptableObject brush)
+    public Brush(BrushScriptableObject brush,int colorChannel)
     {
         BrushMask = brush.BrushMask;
         Size = brush.Size;
-        Channel = brush.Channel;
+        Channel = colorChannel;
         Intensity = brush.Intensity;
         InkAmount = brush.InkAmount;
         Continuity = brush.Continuity;
         BrushType = brush.BrushType;
-        SurfaceSmoothness= brush.SurfaceSmoothness;
+        Smoothness= brush.Smoothness;
         ResetInk();
     }
 }

@@ -14,9 +14,9 @@ public class FacialPattenScriptableObject : ScriptableObject
         string maskImagePath)
     {
         PreviewImage = AssetDatabase.LoadAssetAtPath<Sprite>(iconImagePath + "Sprite_FacialPattenPreview_" + obj.FileName + ".png");
-        FacialPattenTexture = AssetDatabase.LoadAssetAtPath<Texture>(textureImagePath + "Texture_FacialPattenTexture_" + obj.FileName + ".png");
-        MaskMap1 = AssetDatabase.LoadAssetAtPath<Texture>(maskImagePath + "Texture_FacialPattenTexture_" + obj.FileName + "_mask1.png");
-        MaskMap2 = AssetDatabase.LoadAssetAtPath<Texture>(maskImagePath + "Texture_FacialPattenTexture_" + obj.FileName + "_mask2.png");
+        FacialPattenTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(textureImagePath + "Texture_FacialPattenTexture_" + obj.FileName + ".png");
+        MaskMap1 = AssetDatabase.LoadAssetAtPath<Texture2D>(maskImagePath + "Texture_FacialPattenTexture_" + obj.FileName + "_mask1.png");
+        MaskMap2 = AssetDatabase.LoadAssetAtPath<Texture2D>(maskImagePath + "Texture_FacialPattenTexture_" + obj.FileName + "_mask2.png");
         FileName = obj.FileName;
         FaceName = obj.FaceName;
         From = obj.From;
@@ -31,11 +31,11 @@ public class FacialPattenScriptableObject : ScriptableObject
     [PropertySpace(SpaceBefore = 30, SpaceAfter = 30)]
     [HideLabel] [PreviewField(100, ObjectFieldAlignment.Left)] [HorizontalGroup("row1", 120)] [SerializeField] public Sprite PreviewImage;
     [PropertySpace(SpaceBefore = 30, SpaceAfter = 30)]
-    [HideLabel] [PreviewField(100, ObjectFieldAlignment.Left)] [HorizontalGroup("row1", 120)] [SerializeField] public Texture FacialPattenTexture;
+    [HideLabel] [PreviewField(100, ObjectFieldAlignment.Left)] [HorizontalGroup("row1", 120)] [SerializeField] public Texture2D FacialPattenTexture;
     [PropertySpace(SpaceBefore = 30, SpaceAfter = 30)]
-    [HideLabel] [PreviewField(60, ObjectFieldAlignment.Right)] [HorizontalGroup("row1", 60)] [SerializeField] public Texture MaskMap1;
+    [HideLabel] [PreviewField(60, ObjectFieldAlignment.Right)] [HorizontalGroup("row1", 60)] [SerializeField] public Texture2D MaskMap1;
     [PropertySpace(SpaceBefore = 30, SpaceAfter = 30)]
-    [HideLabel] [PreviewField(60, ObjectFieldAlignment.Right)] [HorizontalGroup("row1", 60)] [SerializeField] public Texture MaskMap2;
+    [HideLabel] [PreviewField(60, ObjectFieldAlignment.Right)] [HorizontalGroup("row1", 60)] [SerializeField] public Texture2D MaskMap2;
 
     [FoldoutGroup("基本信息")] [LabelText("文件名称")] [SerializeField] public string FileName;
     [FoldoutGroup("基本信息")] [LabelText("名称")] [SerializeField] public string FaceName;

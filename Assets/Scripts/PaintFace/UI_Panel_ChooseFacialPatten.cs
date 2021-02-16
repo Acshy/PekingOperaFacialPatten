@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using Sirenix.OdinInspector;
 using DG.Tweening;
-public class UI_ChooseFacialPattenPanel : MonoBehaviour
+public class UI_Panel_ChooseFacialPatten : MonoBehaviour
 {
     [FoldoutGroup("左面板")] public RectTransform LeftPanel;
     [FoldoutGroup("左面板")] public GridLayoutGroup Left_FacialGroup;
-    [FoldoutGroup("左面板")] public UI_FacialPattenBtn Left_FacialPatten;
+    [FoldoutGroup("左面板")] public UI_Button_FacialPatten Left_FacialPatten;
     [FoldoutGroup("左面板")] public Dropdown Left_HangDang;
     [FoldoutGroup("左面板")] public Dropdown Left_MainColor;
     [FoldoutGroup("左面板")] public Dropdown Left_Struct;
@@ -40,6 +40,7 @@ public class UI_ChooseFacialPattenPanel : MonoBehaviour
     {
         ShowFacialPattenGroup(FacialPattenList);
         ShowPanel(true);
+        Right_ChooseBtn.onClick.AddListener(OnClickChooseBtn);
     }
 
 
@@ -49,8 +50,8 @@ public class UI_ChooseFacialPattenPanel : MonoBehaviour
     {
         if (isOnShow && (!show))
         {
-            RightPanel.DOAnchorPosX(360, 1);
-            LeftPanel.DOAnchorPosX(-360, 1);
+            RightPanel.DOAnchorPosX(540, 1);
+            LeftPanel.DOAnchorPosX(-540, 1);
         }
         else if ((!isOnShow) && show)
         {
@@ -91,6 +92,7 @@ public class UI_ChooseFacialPattenPanel : MonoBehaviour
     public void OnClickChooseBtn()
     {
         //隐藏面板
+        PaintLevelManager.Instance.InitFaceTextureManager();
         ShowPanel(false);
     }
 
@@ -156,9 +158,8 @@ public class UI_ChooseFacialPattenPanel : MonoBehaviour
         {
             foreach (var facialPatten in facialPattenList)
             {
-                UI_FacialPattenBtn instance = Instantiate(Left_FacialPatten);
-                instance.SetFacialPatternBtn(facialPatten);
-                instance.transform.SetParent(Left_FacialGroup.transform);
+                var instance = Instantiate(Left_FacialPatten,Left_FacialGroup.transform);
+                instance.GetComponent<UI_Button_FacialPatten>().SetFacialPatternBtn(facialPatten);
             }
 
             //默认选中第一个脸谱，将信息默认设置为故事

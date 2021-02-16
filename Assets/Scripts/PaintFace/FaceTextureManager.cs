@@ -16,7 +16,7 @@ public class FaceTextureManager : MonoBehaviour
     Texture2D baseMap;
     Texture2D colorMask1;
     Texture2D colorMask2;
-    Texture2D specularMask;
+    Texture2D smoothMask;
 
     public float Correction;
     public Texture2D PaintAreaTexture1;
@@ -27,22 +27,23 @@ public class FaceTextureManager : MonoBehaviour
 
     private void Start()
     {
-        Initialized(FaceRenderer);
+        Initialized();
         PaintActionQueue = new List<IEnumerator>();
     }
 
-    private void Initialized(Renderer renderer)
+    public void Initialized()
     {
         //获取颜色贴图
-        if (!renderer)
+        if (!FaceRenderer)
         {
+            Debug.LogError("没有找到Renderer！");
             return;
         }
 
         baseMap = new Texture2D(512, 512);//(Texture2D)renderer.sharedMaterial.GetTexture("_BaseMap");
         colorMask1 = new Texture2D(baseMap.width, baseMap.height, TextureFormat.ARGB32, true, true);
         colorMask2 = new Texture2D(baseMap.width, baseMap.height, TextureFormat.ARGB32, true, true);
-        specularMask = new Texture2D(baseMap.width, baseMap.height, TextureFormat.ARGB32, true, true);
+        smoothMask = new Texture2D(baseMap.width, baseMap.height, TextureFormat.ARGB32, true, true);
 
         for (int x = 0; x < baseMap.width; x++)
         {
@@ -50,16 +51,20 @@ public class FaceTextureManager : MonoBehaviour
             {
                 colorMask1.SetPixel(x, y, new Color(0, 0, 0, 0));
                 colorMask2.SetPixel(x, y, new Color(0, 0, 0, 0));
-                specularMask.SetPixel(x, y, new Color(0, 0, 0, 0));
+                smoothMask.SetPixel(x, y, new Color(0.5f, 0.5f, 0.5f, 1));
             }
         }
         colorMask1.Apply();
         colorMask2.Apply();
-        specularMask.Apply();
-
-        renderer.material.SetTexture("_ControlMask1", colorMask1);
-        renderer.material.SetTexture("_ControlMask2", colorMask2);
-        renderer.material.SetTexture("_SpecularMask2", specularMask);
+        smoothMask.Apply();
+        
+        Correction=PaintLevelManager.Instance.Correction;
+        PaintAreaTexture1=PaintLevelManager.Instance.CurrentFacialPatten.MaskMap1;
+        PaintAreaTexture2=PaintLevelManager.Instance.CurrentFacialPatten.MaskMap2;
+        
+        FaceRenderer.material.SetTexture("_ControlMask1", colorMask1);
+        FaceRenderer.material.SetTexture("_ControlMask2", colorMask2);
+        FaceRenderer.material.SetTexture("_BumpMask", smoothMask);
     }
 
     private void Update()
@@ -114,8 +119,10 @@ public class FaceTextureManager : MonoBehaviour
     {
         if (baseMap == null)
             return;
-        float correction;
         float inkRemain = brush.GetInkPercent();
+        if (inkRemain <= 0)
+            return;
+        float correction;
 
         int x, y;//笔刷贴图在模型贴图上的起始点位置
         int brushRangeWidth, brushRangeHeight;//笔刷的处理后尺寸
@@ -149,13 +156,13 @@ public class FaceTextureManager : MonoBehaviour
             0);
 
 
-        //若是颜色笔刷
+        //_________________________________________________颜色笔刷_______________________________________________
         if (brush.BrushType == BrushType.Color)
         {
             //获取控制模型贴图像素值
             Color[] colorMask1Color = colorMask1.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
             Color[] colorMask2Color = colorMask2.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
-            Color[] specularMaskColor = specularMask.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
+            Color[] smoothMaskColor = smoothMask.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
 
             //获取绘制区域贴图像素值
             Color[] paintAreaColor;
@@ -187,24 +194,26 @@ public class FaceTextureManager : MonoBehaviour
                         ref colorMask1Color[h * brushRangeWidth + w],
                         ref colorMask2Color[h * brushRangeWidth + w]);
                     PaintSmoothness(
-                        brush.SurfaceSmoothness,
+                        brush.Smoothness,
                         brusMaskColor[index_brush].r * brush.Intensity * correction,
-                        ref specularMaskColor[h * brushRangeWidth + w]);
+                        ref smoothMaskColor[h * brushRangeWidth + w]);
                 }
             }
-
             colorMask1.SetPixels(x, y, brushRangeWidth, brushRangeHeight, colorMask1Color, 0);
             colorMask2.SetPixels(x, y, brushRangeWidth, brushRangeHeight, colorMask2Color, 0);
-            specularMask.SetPixels(x, y, brushRangeWidth, brushRangeHeight, specularMaskColor, 0);
+            smoothMask.SetPixels(x, y, brushRangeWidth, brushRangeHeight, smoothMaskColor, 0);
             colorMask2.Apply();
             colorMask1.Apply();
-            specularMask.Apply();
+            smoothMask.Apply();
         }
+
+        //_________________________________________________涂抹笔刷_______________________________________________
         else if (brush.BrushType == BrushType.Smudge)
         {
             //获取控制模型贴图像素值
             Color[] mask1Color = colorMask1.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
             Color[] mask2Color = colorMask2.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
+            Color[] smoothMaskColor = smoothMask.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
 
             if (lastFrameMask1Color != null && lastFrameMask2Color != null)
             {
@@ -225,7 +234,8 @@ public class FaceTextureManager : MonoBehaviour
                             lastFrameMask1Color[index_lastFrame],
                             lastFrameMask2Color[index_lastFrame],
                             ref mask1Color[h * brushRangeWidth + w],
-                            ref mask2Color[h * brushRangeWidth + w]);
+                            ref mask2Color[h * brushRangeWidth + w],
+                            ref smoothMaskColor[h * brushRangeWidth + w]);
                     }
                 }
             }
@@ -235,15 +245,18 @@ public class FaceTextureManager : MonoBehaviour
 
             colorMask1.SetPixels(x, y, brushRangeWidth, brushRangeHeight, mask1Color, 0);
             colorMask2.SetPixels(x, y, brushRangeWidth, brushRangeHeight, mask2Color, 0);
+            
+            smoothMask.SetPixels(x, y, brushRangeWidth, brushRangeHeight, smoothMaskColor, 0);
             colorMask2.Apply();
             colorMask1.Apply();
+            smoothMask.Apply();
         }
+
+        //_________________________________________________光滑度笔刷_______________________________________________
         else if (brush.BrushType == BrushType.Smooth)
         {
             //获取控制模型贴图像素值
-            Color[] specularMaskColor = specularMask.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
-
-
+            Color[] smoothMaskColor = smoothMask.GetPixels(x, y, brushRangeWidth, brushRangeHeight, 0);
             int index_brush = 0;
             //设置像素颜色
             for (int w = 0; w < brushRangeWidth; w++)
@@ -257,18 +270,15 @@ public class FaceTextureManager : MonoBehaviour
                     correction = brusMaskColor[index_brush].r * brush.Intensity * inkRemain;
 
                     PaintSmoothness(
-                        brush.SurfaceSmoothness,
-                        brusMaskColor[index_brush].r * brush.Intensity ,
-                         ref specularMaskColor[h * brushRangeWidth + w]);
+                        brush.Smoothness,
+                        brusMaskColor[index_brush].r * brush.Intensity,
+                         ref smoothMaskColor[h * brushRangeWidth + w]);
                 }
             }
 
-            specularMask.SetPixels(x, y, brushRangeWidth, brushRangeHeight, specularMaskColor, 0);
-            specularMask.Apply();
+            smoothMask.SetPixels(x, y, brushRangeWidth, brushRangeHeight, smoothMaskColor, 0);
+            smoothMask.Apply();
         }
-
-
-
         brush.UseInk();
     }
 
@@ -328,11 +338,12 @@ public class FaceTextureManager : MonoBehaviour
 
         return Smoothstep(Correction, 1, channelValue + paintAreaValue * Correction);
     }
-    public void PaintSmoothness(float Smoothness, float intensity, ref Color mask)
+    public void PaintSmoothness(float smooth, float intensity, ref Color mask)
     {
-        mask = Color.Lerp(mask,new Color(Smoothness,Smoothness,Smoothness,1),intensity);
+        //0是粗糙，1是光滑，默认值为0.5
+        mask = Color.Lerp(mask, new Color(smooth, smooth, smooth, 1), intensity);
     }
-    public void PaintSmudge(float intensity, Color lastFrame1, Color lastFrame2, ref Color mask1, ref Color mask2)
+    public void PaintSmudge(float intensity, Color lastFrame1, Color lastFrame2, ref Color mask1, ref Color mask2,ref Color smoothMask)
     {
         mask1.r = Mathf.Lerp(mask1.r, lastFrame1.r, intensity);
         mask1.g = Mathf.Lerp(mask1.g, lastFrame1.g, intensity);
@@ -342,6 +353,7 @@ public class FaceTextureManager : MonoBehaviour
         mask2.g = Mathf.Lerp(mask2.g, lastFrame2.g, intensity);
         mask2.b = Mathf.Lerp(mask2.b, lastFrame2.b, intensity);
         mask2.a = Mathf.Lerp(mask2.a, lastFrame2.a, intensity);
+        PaintSmoothness(0.5f,intensity,ref smoothMask);
     }
 
 
