@@ -136,7 +136,7 @@
                 half4 facialPatten = SAMPLE_TEXTURE2D(_FacialPattenTex, sampler_BaseMap, IN.uv.zw);
                 half facialPattenMask = SAMPLE_TEXTURE2D(_FacialPattenMask, sampler_FacialPattenMask, IN.uv.zw);
                 float4 specularMask = SAMPLE_TEXTURE2D(_SpecularMask, sampler_SpecularMask, IN.uv.xy);
-                float4 curve = SAMPLE_TEXTURE2D(_CurveMap, sampler_CurveMap, IN.uv.xy);
+                float curve = SAMPLE_TEXTURE2D(_CurveMap, sampler_CurveMap, IN.uv.xy);
                 float smoothMask = SAMPLE_TEXTURE2D(_BumpMask, sampler_BumpMask, IN.uv.zw);
                 float3 normalTS = UnpackNormalScale(SAMPLE_TEXTURE2D(_BumpMap, sampler_BumpMap, IN.uv.xy), clamp(_BumpScale * (1-smoothMask) * 2, -1, 1));
                 float3 normalWS = normalize(TransformTangentToWorld(normalTS, half3x3(IN.tangentWS, IN.bitangentWS, IN.normalWS)));
@@ -173,7 +173,7 @@
                 //计算主光
                 Light light = GetMainLight();
                 half NdotL = dot(normalize(normalWS), light.direction);
-                half3 sss = SAMPLE_TEXTURE2D(_SSSRampMap, sampler_SSSRampMap, float2(0.5 * NdotL + 0.5, saturate(curve.r * _SSSScale)));
+                half3 sss = SAMPLE_TEXTURE2D(_SSSRampMap, sampler_SSSRampMap, float2(0.5 * NdotL + 0.5, saturate(curve * _SSSScale)));
                 half3 diffuseColor = light.color * sss;
                 half3 specularColor = LightingSpecular(light.color, light.direction, normalize(normalWS), normalize(IN.viewDirWS), _SpecularColor, _SpcularGloss);
                 //计算附加光照
@@ -183,7 +183,7 @@
                     Light light = GetAdditionalLight(lightIndex, IN.positionWS);
                     half3 attenuation = light.distanceAttenuation * light.shadowAttenuation;
                     NdotL = dot(normalize(normalWS), light.direction);
-                    sss = SAMPLE_TEXTURE2D(_SSSRampMap, sampler_SSSRampMap, float2(0.5 * NdotL + 0.5, saturate(curve.r * _SSSScale)));
+                    sss = SAMPLE_TEXTURE2D(_SSSRampMap, sampler_SSSRampMap, float2(0.5 * NdotL + 0.5, saturate(curve * _SSSScale)));
                     diffuseColor += light.color * attenuation * sss;
                     specularColor += LightingSpecular(attenuation * light.color, light.direction, normalize(normalWS), normalize(IN.viewDirWS), _SpecularColor, _SpcularGloss);
                 }
