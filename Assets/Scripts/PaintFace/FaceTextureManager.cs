@@ -57,11 +57,11 @@ public class FaceTextureManager : MonoBehaviour
         colorMask1.Apply();
         colorMask2.Apply();
         smoothMask.Apply();
-        
-        Correction=PaintLevelManager.Instance.Correction;
-        PaintAreaTexture1=PaintLevelManager.Instance.CurrentFacialPatten.MaskMap1;
-        PaintAreaTexture2=PaintLevelManager.Instance.CurrentFacialPatten.MaskMap2;
-        
+
+        Correction = PaintLevelManager.Instance.Correction;
+        PaintAreaTexture1 = PaintLevelManager.Instance.CurrentFacialPatten.MaskMap1;
+        PaintAreaTexture2 = PaintLevelManager.Instance.CurrentFacialPatten.MaskMap2;
+
         FaceRenderer.material.SetTexture("_ControlMask1", colorMask1);
         FaceRenderer.material.SetTexture("_ControlMask2", colorMask2);
         FaceRenderer.material.SetTexture("_BumpMask", smoothMask);
@@ -80,18 +80,13 @@ public class FaceTextureManager : MonoBehaviour
             PaintActionQueue.RemoveAt(0);
         }
     }
-    public void Paint(Vector2 currentUV, Vector2 lastUV, Brush brush, PointType pointType)
+    public void ClearFrameBuffer()
     {
-        if (pointType == PointType.StartPoint)
-        {
-            brush.ResetInk();
-            if (brush.BrushType == BrushType.Smudge)//为涂抹模式清空帧缓存
-            {
-                lastFrameMask1Color = null;
-                lastFrameMask2Color = null;
-            }
-        }
-
+        lastFrameMask1Color = null;
+        lastFrameMask2Color = null;
+    }
+    public void Paint(Vector2 currentUV, Vector2 lastUV, Brush brush)
+    {
         Vector2 vec2 = lastUV - currentUV;
         int pointCount = 1;
         if (Vector2.SqrMagnitude(vec2) < 0.25f)
@@ -245,7 +240,7 @@ public class FaceTextureManager : MonoBehaviour
 
             colorMask1.SetPixels(x, y, brushRangeWidth, brushRangeHeight, mask1Color, 0);
             colorMask2.SetPixels(x, y, brushRangeWidth, brushRangeHeight, mask2Color, 0);
-            
+
             smoothMask.SetPixels(x, y, brushRangeWidth, brushRangeHeight, smoothMaskColor, 0);
             colorMask2.Apply();
             colorMask1.Apply();
@@ -343,7 +338,7 @@ public class FaceTextureManager : MonoBehaviour
         //0是粗糙，1是光滑，默认值为0.5
         mask = Color.Lerp(mask, new Color(smooth, smooth, smooth, 1), intensity);
     }
-    public void PaintSmudge(float intensity, Color lastFrame1, Color lastFrame2, ref Color mask1, ref Color mask2,ref Color smoothMask)
+    public void PaintSmudge(float intensity, Color lastFrame1, Color lastFrame2, ref Color mask1, ref Color mask2, ref Color smoothMask)
     {
         mask1.r = Mathf.Lerp(mask1.r, lastFrame1.r, intensity);
         mask1.g = Mathf.Lerp(mask1.g, lastFrame1.g, intensity);
@@ -353,7 +348,7 @@ public class FaceTextureManager : MonoBehaviour
         mask2.g = Mathf.Lerp(mask2.g, lastFrame2.g, intensity);
         mask2.b = Mathf.Lerp(mask2.b, lastFrame2.b, intensity);
         mask2.a = Mathf.Lerp(mask2.a, lastFrame2.a, intensity);
-        PaintSmoothness(0.5f,intensity,ref smoothMask);
+        PaintSmoothness(0.5f, intensity, ref smoothMask);
     }
 
 

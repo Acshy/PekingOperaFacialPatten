@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   brushType: 1
   brushMask: {fileID: 2800000, guid: 73efa477f59410341a2f19d875c3b38f, type: 3}
-  channel: 3
   smoothness: 0.75
-  size: 48
+  size: 36
   continuity: 5
   intensity: 1
-  inkAmount: 100
+  inkAmount: 999
