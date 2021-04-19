@@ -51,10 +51,10 @@ public class PaintToolObj : MonoBehaviour
     }
     public void OnMouseClick()
     {
-        Debug.LogError("PointClick");
-
         PaintToolLabel.HideLabel();
         OutLine.gameObject.SetActive(false);
-
+        
+        PaintLevelManager.Instance.SetCurrentBrush(Brush,ColorChannel);
+        CameraController.Instance.ApplyCameraData(0,0.5f);
     }
 }

@@ -1,0 +1,134 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Mat_FacialPatten_SetUp
+  m_Shader: {fileID: 4800000, guid: 4de2e2e848f94e94faac8d51c5d53fba, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: 20addae743296cc4385d4dde22f8196b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BrowPartTexture:
+        m_Texture: {fileID: 2800000, guid: 2d5b787d11b3a504089b4c3673b2fba2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 32032a24adb475848b4c3c4903553c54, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ControlMask1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ControlMask2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CurveMap:
+        m_Texture: {fileID: 2800000, guid: 6bc1d23ff79511843857433cd66abb89, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DecoPartTexture:
+        m_Texture: {fileID: 2800000, guid: 3bc1e3cf9aeec4744aa7d00c30898165, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EyePartTexture:
+        m_Texture: {fileID: 2800000, guid: baa185d20b01a2648915311aa046ef34, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FacePartTexture:
+        m_Texture: {fileID: 2800000, guid: ba89aca5cb4789247836bcbe034eba4f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FacePartTexture2:
+        m_Texture: {fileID: 2800000, guid: e734abbcca18a0f4eab269a9ab1429fb, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FacialPattenMask:
+        m_Texture: {fileID: 2800000, guid: 856cab991433f4b40816f669d230ea98, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FacialPattenTex:
+        m_Texture: {fileID: 2800000, guid: debcd612655e3bc459a407148b570bd6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ForeHeadPartTexture:
+        m_Texture: {fileID: 2800000, guid: 61f414a69cde3144a800b177aa30bc4f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MousePartTexture:
+        m_Texture: {fileID: 2800000, guid: 2c3316a57e6e8754fa166d64b54e9299, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NosePartTexture:
+        m_Texture: {fileID: 2800000, guid: fdd7e4f8823939648bbab0deb24789d6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _PaintArea1:
+        m_Texture: {fileID: 2800000, guid: 3f5a9dc2b69db1942b698772e1105182, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _PaintArea2:
+        m_Texture: {fileID: 2800000, guid: 3f5a9dc2b69db1942b698772e1105182, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _PaintBrushTexture:
+        m_Texture: {fileID: 2800000, guid: 5d97a52229579f84aa9bd0eceb1a92ad, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SSSRampMap:
+        m_Texture: {fileID: 2800000, guid: 0cc42ade0a4126b46ac14502917a8693, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecularMask:
+        m_Texture: {fileID: 2800000, guid: 4e460a93447ecc740a4c388893ddf980, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecularMask2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 10, y: 10}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _BumpScale: -1
+    - _Correction: 0
+    - _Cutoff: 0
+    - _EmissionScale: 0
+    - _FacialPattenIntensity: 0.916
+    - _PaintBrushIntensity: 0.403
+    - _SSSScale: 1
+    - _Smoothness: 10
+    - _Spcular2Scale: 1
+    - _SpcularGloss: 200
+    m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BrowPartColor: {r: 1, g: 1, b: 1, a: 1}
+    - _DecoPartColor: {r: 1, g: 1, b: 1, a: 1}
+    - _EyePartColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FacePartColor: {r: 1, g: 0.7352941, b: 0, a: 1}
+    - _ForeHeadPartColor: {r: 1, g: 1, b: 1, a: 1}
+    - _MousePartColor: {r: 1, g: 1, b: 1, a: 1}
+    - _NosePartColor: {r: 0.9450981, g: 0.34901962, b: 0.20000002, a: 1}
+    - _SpecularColor: {r: 0.754717, g: 0.71005535, b: 0.6728373, a: 1}

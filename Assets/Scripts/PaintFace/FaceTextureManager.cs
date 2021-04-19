@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 using System.IO;
 
 public class FaceTextureManager : MonoBehaviour
@@ -12,7 +14,8 @@ public class FaceTextureManager : MonoBehaviour
         Instance = this;
     }
 
-    public Renderer FaceRenderer;
+    public SkinnedMeshRenderer FaceRenderer;
+    private MeshCollider faceCollider;
     Texture2D baseMap;
     Texture2D colorMask1;
     Texture2D colorMask2;
@@ -27,7 +30,7 @@ public class FaceTextureManager : MonoBehaviour
 
     private void Start()
     {
-        Initialized();
+        //Initialized();
         PaintActionQueue = new List<IEnumerator>();
     }
 
@@ -54,6 +57,7 @@ public class FaceTextureManager : MonoBehaviour
                 smoothMask.SetPixel(x, y, new Color(0.5f, 0.5f, 0.5f, 1));
             }
         }
+        
         colorMask1.Apply();
         colorMask2.Apply();
         smoothMask.Apply();
@@ -61,10 +65,52 @@ public class FaceTextureManager : MonoBehaviour
         Correction = PaintLevelManager.Instance.Correction;
         PaintAreaTexture1 = PaintLevelManager.Instance.CurrentFacialPatten.MaskMap1;
         PaintAreaTexture2 = PaintLevelManager.Instance.CurrentFacialPatten.MaskMap2;
-
+        
         FaceRenderer.material.SetTexture("_ControlMask1", colorMask1);
         FaceRenderer.material.SetTexture("_ControlMask2", colorMask2);
         FaceRenderer.material.SetTexture("_BumpMask", smoothMask);
+        
+        faceCollider = FaceRenderer.GetComponent<MeshCollider>();
+        
+        BakeMesh();
+    }
+
+
+    private void FixedUpdate()
+    {
+        BakeMesh();
+    }
+
+    void BakeMesh()
+    {
+        if(faceCollider==null || faceCollider==null)
+            return;
+        ;
+        Mesh colliderMesh = new Mesh();
+        FaceRenderer.BakeMesh(colliderMesh); //更新mesh
+        faceCollider.sharedMesh = null;
+        faceCollider.sharedMesh = colliderMesh; //将新的mesh赋给meshcollider
+    }
+    
+    public void SetFacialPattenTexture(Texture2D facialPattenTexture,Texture2D paintArea1,Texture2D paintArea2)
+    {
+        if (facialPattenTexture != null)
+        {
+            FaceRenderer.material.SetTexture("_FacialPattenTex", facialPattenTexture);
+            FaceRenderer.material.SetFloat("_FacialPattenIntensity", 0);
+            DOTween.Kill(FaceRenderer.material);
+            FaceRenderer.material.DOFloat(0.8f, "_FacialPattenIntensity", 0.6f);
+            
+            if(paintArea1!=null && paintArea2!=null)
+            FaceRenderer.material.SetTexture("_PaintArea1", paintArea1);
+            FaceRenderer.material.SetTexture("_PaintArea2", paintArea2);
+        }
+        else
+        {
+            DOTween.Kill(FaceRenderer.material);
+            FaceRenderer.material.DOFloat(0, "_FacialPattenIntensity", 0.6f);
+        }
+        
     }
 
     private void Update()
@@ -74,10 +120,13 @@ public class FaceTextureManager : MonoBehaviour
             SaveRenderTextureToPNG(colorMask1, "TextureSaved_Mask1");
         }
         //每一帧从绘制队列中取值绘制
-        if (PaintActionQueue.Count > 0)
+        if (PaintActionQueue != null)
         {
-            StartCoroutine(PaintActionQueue[0]);
-            PaintActionQueue.RemoveAt(0);
+            if (PaintActionQueue.Count > 0)
+            {
+                StartCoroutine(PaintActionQueue[0]);
+                PaintActionQueue.RemoveAt(0);
+            }
         }
     }
     public void ClearFrameBuffer()
@@ -99,8 +148,6 @@ public class FaceTextureManager : MonoBehaviour
         {
             PaintActionQueue.Add(DelayPaint(lastUV - vec2.normalized * stepDis * i, brush));
         }
-
-
     }
 
     List<IEnumerator> PaintActionQueue;

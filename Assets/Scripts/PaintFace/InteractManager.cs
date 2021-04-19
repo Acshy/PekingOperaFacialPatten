@@ -15,16 +15,7 @@ public class InteractManager : MonoBehaviour
     {
         Instance = this;
     }
-
-
-
-
-    void Start()
-    {
-        cameraTrans = Camera.main.transform;
-        cameraDistance = Vector3.Distance(cameraTrans.position, HeadCenter.transform.position);
-    }
-
+    
     //脸谱绘制
     Vector2 lasHitUv;
     void UpdatePaintMesh()
@@ -101,48 +92,7 @@ public class InteractManager : MonoBehaviour
     
 
 
-    //相机旋转控制
-    public Transform HeadCenter;
-    [HorizontalGroup("Zoom", LabelWidth = 50)] public float ZoomSpeed;
-    [HorizontalGroup("Zoom")] public float MinZ;
-    [HorizontalGroup("Zoom")] public float MaxZ;
-
-    [HorizontalGroup("RotX", LabelWidth = 50)] public float RotXSpeed;
-    [HorizontalGroup("RotX")] public float MinX;
-    [HorizontalGroup("RotX")] public float MaxX;
-
-    [HorizontalGroup("RotY", LabelWidth = 50)] public float RotYSpeed;
-    [HorizontalGroup("RotY")] public float MinY;
-    [HorizontalGroup("RotY")] public float MaxY;
-    Vector3 mouseDownEuler;
-    public float Lerp = 0.5f;
-    Transform cameraTrans;
-    Vector3 mouseDownPoint;
-    Vector3 mouseDownCamFwd;
-    float cameraDistance;
-    void UpdateCamera()
-    {
-        float wheel = Input.mouseScrollDelta.y * Time.deltaTime * 10;
-        cameraTrans.transform.Translate(Vector3.forward * wheel);
-        cameraDistance = Vector3.Distance(cameraTrans.position, HeadCenter.transform.position);
-        Vector3 pos = HeadCenter.position - cameraTrans.forward * cameraDistance;
-        if (Input.GetMouseButtonDown(1))
-        {
-            mouseDownPoint = Input.mousePosition;
-            mouseDownCamFwd = cameraTrans.forward;
-            mouseDownEuler = cameraTrans.eulerAngles;
-        }
-        if (Input.GetMouseButton(1))
-        {
-            Vector3 moseMove = (Input.mousePosition - mouseDownPoint);
-            Vector3 targetEuler = mouseDownEuler + new Vector3(-moseMove.y * RotXSpeed, moseMove.x * RotYSpeed, 0);
-            cameraTrans.rotation = Quaternion.Lerp(cameraTrans.rotation, Quaternion.Euler(targetEuler), Lerp);
-            cameraTrans.position = HeadCenter.position - cameraTrans.forward * cameraDistance;
-        }
-
-        //限制检测
-    }
-
+   
 
     void UpatePanel()
     {
@@ -153,7 +103,7 @@ public class InteractManager : MonoBehaviour
 
         UpdatePaintMesh();
         UpdatePaintToolSelect();
-        UpdateCamera();
+        CameraController.Instance.UpdateCamera();
 
     }
 }

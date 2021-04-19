@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -17,11 +18,20 @@ public class PaintLevelManager : MonoBehaviour
     //绘制的脸谱
     public FacialPattenScriptableObject CurrentFacialPatten => currentFacialPatten;
     private FacialPattenScriptableObject currentFacialPatten;
+    public PaintAreaHintController PaintAreaHintController;
     public void SetCurrentFace(FacialPattenScriptableObject facialPatten)
     {
-        currentFacialPatten = facialPatten;
-        SetPalette(facialPatten.MainColor);
-        SetFacialPattenTexture(facialPatten.FacialPattenTexture);
+        if (facialPatten != null)
+        {
+            currentFacialPatten = facialPatten;
+            SetPalette(facialPatten.MainColor);
+            FaceTextureManager.Instance.SetFacialPattenTexture(facialPatten.FacialPattenTexture,facialPatten.MaskMap1,facialPatten.MaskMap2);
+        }
+        else
+        {
+            currentFacialPatten = null;
+            FaceTextureManager.Instance.SetFacialPattenTexture(null,null,null);
+        }
     }
 
     //辅助绘制参数
@@ -35,6 +45,11 @@ public class PaintLevelManager : MonoBehaviour
     public void SetCurrentBrush(BrushScriptableObject brushScriptable, int colorChannel)
     {
         CurrentBrush = new Brush(brushScriptable, colorChannel);
+        Shader.SetGlobalInt("_CurrentChannel",colorChannel);
+        if (colorChannel >= 0)
+        {
+            PaintAreaHintController.SetHint(true);
+        }
     }
 
     //当前调色板
@@ -57,17 +72,7 @@ public class PaintLevelManager : MonoBehaviour
         channelColorsMat = new Matrix4x4(CurrentPalette[4], CurrentPalette[5], CurrentPalette[6], CurrentPalette[7]);
         Shader.SetGlobalMatrix("_MaskColor2", channelColorsMat);
     }
-
-    public void SetFacialPattenTexture(Texture2D texture)
-    {
-
-
-        Renderer FaceRenderer = FaceTextureManager.Instance.FaceRenderer;
-        FaceRenderer.material.SetTexture("_FacialPattenTex", texture);
-        FaceRenderer.material.SetFloat("_FacialPattenIntensity", 0);
-        DOTween.Kill(FaceRenderer.material);
-        FaceRenderer.material.DOFloat(0.75f, "_FacialPattenIntensity", 0.6f);
-    }
+    
     public void InitFaceTextureManager()
     {
         Renderer FaceRenderer = FaceTextureManager.Instance.FaceRenderer;     
@@ -76,16 +81,11 @@ public class PaintLevelManager : MonoBehaviour
         FaceTextureManager.Instance.Initialized();
     }
 
-    private void OnValidate()
-    {
-        SetPaletteInShader();
-    }
 
     void Start()
     {
         SetPaletteInShader();
     }
-
 }
 
 public enum PaintLevelGameState

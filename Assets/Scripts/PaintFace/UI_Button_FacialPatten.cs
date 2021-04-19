@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class UI_Button_FacialPatten : MonoBehaviour
 {
     private FacialPattenScriptableObject facialPatten;
-    private UI_Panel_ChooseFacialPatten panel;
+    public UI_Panel_InfoPanel InfoPanel;
+    public UI_Panel_FacialGroup FacialGroupPanel;
    
     public void SetFacialPatternBtn(FacialPattenScriptableObject _facialPatten)
     {
@@ -14,12 +15,13 @@ public class UI_Button_FacialPatten : MonoBehaviour
         GetComponentInChildren<Image>().sprite = facialPatten.PreviewImage;
         GetComponentInChildren<Text>().text = facialPatten.FaceName;
         GetComponent<Button>().onClick.AddListener(OnClick);
-        panel=GetComponentInParent<UI_Panel_ChooseFacialPatten>();
         gameObject.SetActive(true);
     }
     public void OnClick()
     {
         PaintLevelManager.Instance.SetCurrentFace(facialPatten);        
-        panel.SetFacialPattenInfo(facialPatten);
+        InfoPanel.SetFacialPatten(facialPatten);
+        InfoPanel.Show();
+        FacialGroupPanel.Hide();
     }
 }

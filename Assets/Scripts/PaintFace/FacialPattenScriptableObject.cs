@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -7,7 +8,8 @@ using Sirenix.OdinInspector;
 [CreateAssetMenu(menuName = "ScriptableObj/FacialPatten")]
 public class FacialPattenScriptableObject : ScriptableObject
 {
-
+   
+    
     public void CopyValue(FacialPattenScriptableObject obj,
         string iconImagePath,
         string textureImagePath,
@@ -47,51 +49,14 @@ public class FacialPattenScriptableObject : ScriptableObject
     [FoldoutGroup("基本信息")] [LabelText("脸谱解读")] [SerializeField] [Multiline] public string InfoFacialPatten;
     [FoldoutGroup("基本信息")] [LabelText("角色介绍")] [SerializeField] [Multiline] public string InfoCharacter;
     [FoldoutGroup("基本信息")] [LabelText("戏曲故事")] [SerializeField] [Multiline] public string InfoStory;
+    
+    [LabelText("绘制步骤")] [SerializeField]  public List<paintStep> PaintSteps;
 
+   
 }
-
-[System.Serializable]
-public enum HangDang
+[Serializable]
+public struct  paintStep
 {
-    None = 0,
-    [LabelText("生")] Sheng = 1,
-    [LabelText("旦")] Dan = 2,
-    [LabelText("净")] Jing = 3,
-    [LabelText("丑")] Chou = 4
-}
-[System.Serializable]
-public enum PuShi
-{
-    None = 0,
-    [LabelText("整脸")] ZhengLian = 1,
-    [LabelText("三块瓦")] SanKuaiWa = 2,
-    [LabelText("十字门脸")] ShiZiMengLian = 3,
-    [LabelText("六分脸")] LiuFengLian = 4,
-    [LabelText("碎花脸")] SuiHuaLian = 5,
-    [LabelText("元宝脸")] YuanBaoLian = 6,
-    [LabelText("歪脸")] WaiLian = 7,
-    [LabelText("象形脸")] XiangXingLian = 8,
-    [LabelText("俊扮")] JunBan = 9,
-    [LabelText("其它")] Other = 10,
-    // [LabelText("神仙脸")] ShengXianLian = 9,
-    // [LabelText("小妖脸")] XiaoYaoLian = 10,
-    // [LabelText("英雄脸")] YingXiongLian = 11,
-    // [LabelText("僧道脸")] SengDaoLian = 12,
-    // [LabelText("丑角脸")] ChouJueLian = 13,
-}
-
-[System.Serializable]
-public enum MainColor
-{
-    None = 0,
-    Red = 1,
-    Purple = 2,
-    Black = 3,
-    White = 4,
-    Blue = 5,
-    Green = 6,
-    Yellow = 7,
-    Pink = 8,
-    Goldn = 9,
-    Silver = 10
+    [Multiline] public string description;
+    public List<MainColor> UseColor;
 }

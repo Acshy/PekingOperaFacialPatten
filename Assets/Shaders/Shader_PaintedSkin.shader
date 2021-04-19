@@ -6,6 +6,10 @@
         [HideInInspector]_BaseColor ("BaseColor", Color) = (1, 1, 1, 1)
         [NoScaleOffset]_FacialPattenTex ("Facial Patten", 2D) = "black" { }
         [NoScaleOffset]_FacialPattenMask ("Facial Patten Mask", 2D) = "white" { }
+        
+        [NoScaleOffset]_PaintBrushTexture ("Paint Brush Texture", 2D) = "white" { }
+        _PaintBrushIntensity ("PaintBrushIntensity", Range(0.0, 1.0)) = 0.75   
+        
         _FacialPattenIntensity ("FacialPattenIntensity", Range(0.0, 1.0)) = 0.75
         
         [NoScaleOffset] _SpecularMask ("Specular Mask", 2D) = "white" { }
@@ -27,12 +31,12 @@
         
         
         
-        //[NoScaleOffset]_PaintArea1 ("_PaintArea1", 2D) = "black" { }
-        //[NoScaleOffset]_PaintArea2 ("_PaintArea2", 2D) = "black" { }
+        [NoScaleOffset]_PaintArea1 ("_PaintArea1", 2D) = "black" { }
+        [NoScaleOffset]_PaintArea2 ("_PaintArea2", 2D) = "black" { }
         
-        [HideInInspector][NoScaleOffset]_BumpMask ("Smooth Mask", 2D) = "grey" { }
-        [HideInInspector][NoScaleOffset]_ControlMask1 ("_ControlMask1", 2D) = "black" { }
-        [HideInInspector][NoScaleOffset]_ControlMask2 ("_ControlMask2", 2D) = "black" { }
+        [NoScaleOffset]_BumpMask ("_Smooth Mask", 2D) = "grey" { }
+        [NoScaleOffset]_ControlMask1 ("_ControlMask1", 2D) = "black" { }
+        [NoScaleOffset]_ControlMask2 ("_ControlMask2", 2D) = "black" { }
     }
     SubShader
     {
@@ -50,9 +54,11 @@
         float _Spcular2Scale;
         float _BumpScale;
         float _SSSScale;
+        int _CurrentChannel;
         float _Cutoff;
         //float _Correction;
         float _EmissionScale;
+        float _PaintBrushIntensity;
         CBUFFER_END
         
         uniform float4x4 _MaskColor1;
@@ -71,6 +77,8 @@
             
             #pragma vertex vert
             #pragma fragment frag
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
             
             struct Attributes
             {
@@ -88,9 +96,11 @@
                 float3 normalWS: TEXCOORD3;    // xyz: normal, w: viewDir.x
                 float3 tangentWS: TEXCOORD4;    // xyz: tangent, w: viewDir.y
                 float3 bitangentWS: TEXCOORD5;    // xyz: bitangent, w: viewDir.z
+                float4 shadowCoord: TEXCOORD6;
             };
             
             TEXTURE2D(_BaseMap);        SAMPLER(sampler_BaseMap);
+            TEXTURE2D(_PaintBrushTexture);        SAMPLER(sampler_PaintBrushTexture);
             TEXTURE2D(_FacialPattenTex);        SAMPLER(sampler_FacialPattenTex);
             TEXTURE2D(_FacialPattenMask);        SAMPLER(sampler_FacialPattenMask);
             TEXTURE2D(_SpecularMask);   SAMPLER(sampler_SpecularMask);
@@ -119,6 +129,8 @@
                 OUT.bitangentWS = normalInputs.bitangentWS;
                 OUT.uv.xy = TRANSFORM_TEX(IN.uv, _BaseMap);
                 OUT.uv.zw = TRANSFORM_TEX(IN.uv2, _BaseMap);
+                OUT.shadowCoord = GetShadowCoord(positionInputs);
+                
                 return OUT;
             }
             
@@ -142,46 +154,40 @@
                 float3 normalWS = normalize(TransformTangentToWorld(normalTS, half3x3(IN.tangentWS, IN.bitangentWS, IN.normalWS)));
                 half4 mask1 = SAMPLE_TEXTURE2D(_ControlMask1, sampler_ControlMask1, IN.uv.zw);
                 half4 mask2 = SAMPLE_TEXTURE2D(_ControlMask2, sampler_ControlMask2, IN.uv.zw);
-                //float4 paintArea1 = SAMPLE_TEXTURE2D(_PaintArea1, sampler_PaintArea1, IN.uv);
-                //float4 paintArea2 = SAMPLE_TEXTURE2D(_PaintArea2, sampler_PaintArea2, IN.uv);
+                float4 paintArea1 = SAMPLE_TEXTURE2D(_PaintArea1, sampler_PaintArea1, IN.uv.zw);
+                float4 paintArea2 = SAMPLE_TEXTURE2D(_PaintArea2, sampler_PaintArea2, IN.uv.zw);
+                float paintbrush = SAMPLE_TEXTURE2D(_PaintBrushTexture, sampler_PaintBrushTexture, IN.uv.zw);               
+                paintbrush = lerp(float3(1,1,1),paintbrush,_PaintBrushIntensity);                
+                paintbrush=saturate(paintbrush+(3-(facialPatten.r+facialPatten.g+facialPatten.b))*0.15f);//亮度越低应用纹理越弱
                 
-                half3 baseColor = lerp(baseMap.rgb, facialPatten.rgb, facialPatten.a * _FacialPattenIntensity * facialPattenMask);
+                half3 baseColor = lerp(baseMap.rgb, facialPatten.rgb, facialPatten.a * _FacialPattenIntensity * facialPattenMask*paintbrush);
                 
-                //绘制区域校正
-                
-                // mask1.r = adjustPaint(mask1.r);
-                // mask1.g = adjustPaint(mask1.g);
-                // mask1.b = adjustPaint(mask1.b);
-                // mask1.a = adjustPaint(mask1.a);
-                // mask2.r = adjustPaint(mask2.r);
-                // mask2.g = adjustPaint(mask2.g);
-                // mask2.b = adjustPaint(mask2.b);
-                // mask2.a = adjustPaint(mask2.a);
-                
-                
-                float alpha = mask1.r + mask1.g + mask1.b + mask1.a + mask2.r + mask2.g + mask2.b + mask2.a;
+                float alpha =  mask1.r + mask1.g + mask1.b + mask1.a + mask2.r + mask2.g + mask2.b + mask2.a;
                 
                 
                 //计算绘制颜色
                 half4 paintColor = mul(_MaskColor1, mask1) + mul(_MaskColor2, half4(mask2));
-                baseColor = lerp(baseColor, paintColor.rgb, alpha * facialPattenMask.r);
+                paintbrush=saturate(paintbrush+(3-(paintColor.r+paintColor.g+paintColor.b))*0.15f);//亮度越低应用纹理越弱            
+                baseColor = lerp(baseColor, paintColor.rgb, alpha * facialPattenMask.r*paintbrush);
                 
                 //绘制油彩部分，高光更强
                 //TODO：找到更合适的高光表达
                 specularMask = saturate(specularMask *smoothMask*2+ 0.1f*smoothMask);
                 
                 //计算主光
-                Light light = GetMainLight();
+                IN.shadowCoord = TransformWorldToShadowCoord(IN.positionWS);
+                Light light = GetMainLight(IN.shadowCoord);
+                half3 attenuation = light.distanceAttenuation * light.shadowAttenuation;
                 half NdotL = dot(normalize(normalWS), light.direction);
                 half3 sss = SAMPLE_TEXTURE2D(_SSSRampMap, sampler_SSSRampMap, float2(0.5 * NdotL + 0.5, saturate(curve * _SSSScale)));
-                half3 diffuseColor = light.color * sss;
-                half3 specularColor = LightingSpecular(light.color, light.direction, normalize(normalWS), normalize(IN.viewDirWS), _SpecularColor, _SpcularGloss);
+                half3 diffuseColor = light.color * attenuation * sss;
+                half3 specularColor = LightingSpecular(attenuation * light.color, light.direction, normalize(normalWS), normalize(IN.viewDirWS), _SpecularColor, _SpcularGloss);
                 //计算附加光照
                 uint pixelLightCount = GetAdditionalLightsCount();
                 for (uint lightIndex = 0; lightIndex < pixelLightCount; ++lightIndex)
                 {
                     Light light = GetAdditionalLight(lightIndex, IN.positionWS);
-                    half3 attenuation = light.distanceAttenuation * light.shadowAttenuation;
+                    attenuation = light.distanceAttenuation * light.shadowAttenuation;
                     NdotL = dot(normalize(normalWS), light.direction);
                     sss = SAMPLE_TEXTURE2D(_SSSRampMap, sampler_SSSRampMap, float2(0.5 * NdotL + 0.5, saturate(curve * _SSSScale)));
                     diffuseColor += light.color * attenuation * sss;
@@ -189,8 +195,21 @@
                 }
                 half3 color = baseColor * diffuseColor + specularColor * specularMask;
                 
+                
                 //自发光
-                color.rgb = lerp(color.rgb,facialPatten.rgb,_EmissionScale*facialPatten.a *facialPattenMask);
+                if(_CurrentChannel>=0)
+                {
+                   if(_CurrentChannel<4)
+                   {
+                       //color.rgb = lerp(color.rgb,half3(_MaskColor1[0][_CurrentChannel],_MaskColor1[1][_CurrentChannel],_MaskColor1[2][_CurrentChannel]),smoothstep(0.6,0.9, paintArea1[_CurrentChannel]));
+                       color.rgb = lerp(color.rgb,half3(_MaskColor1[0][_CurrentChannel],_MaskColor1[1][_CurrentChannel],_MaskColor1[2][_CurrentChannel]),smoothstep(0,0.2,paintArea1[_CurrentChannel])*_EmissionScale*facialPattenMask.r);
+                   }
+                   else
+                   {
+                       color.rgb = lerp(color.rgb,half3(_MaskColor2[0][_CurrentChannel-4],_MaskColor2[1][_CurrentChannel-4],_MaskColor2[2][_CurrentChannel-4]),smoothstep(0,0.2,paintArea2[_CurrentChannel-4])*_EmissionScale*facialPattenMask.r);       
+                   }
+                }
+               
                 //color = half3(alpha,alpha,alpha);
                 clip(baseMap.a - _Cutoff);
                 return float4(color, 1);
